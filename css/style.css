@@ -404,6 +404,9 @@ body::before {
 
 .shot--theme { width: 299px; height: 180px; }
 .shot--editor { width: 705px; height: 280px; }
+/* эти два скриншота идут без тени */
+.shot--theme,
+.shot--editor { box-shadow: none; }
 
 .stack-list { display: flex; flex-direction: column; gap: 12px; }
 .stack-list .rule {
@@ -436,9 +439,10 @@ body::before {
 .versus .card--dark > * { width: 100%; }
 .versus__mark {
   position: absolute;
-  left: 50%;
+  left: 0;
+  right: 0;
   top: 131px;
-  transform: translateX(-50%);
+  text-align: center;
   font-weight: 700;
   font-style: italic;
   font-size: 36px;
@@ -619,7 +623,8 @@ body::before {
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: hidden;
+  /* блоб намеренно выходит за границы секции — как во фрейме макета */
+  overflow: visible;
 }
 .showcase__blob {
   position: absolute;
