@@ -631,6 +631,10 @@ body::before {
   border-radius: 50%;
   filter: blur(100px);
   will-change: transform;
+  /* свечение выходит за пределы секции, но лежит под всем контентом страницы:
+     ни один предок не создаёт stacking context, поэтому -1 уводит блоб
+     в самый низ корневого контекста, оставляя его над фоном страницы */
+  z-index: -1;
 }
 .showcase__item {
   position: relative;
