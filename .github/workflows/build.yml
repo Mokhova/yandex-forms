@@ -1,0 +1,46 @@
+name: build-site
+
+on:
+  push:
+    paths: ['payload.json']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Expand payload and fetch images from Figma
+        run: |
+          python3 - <<'PY'
+          import json, base64, gzip, os, urllib.request
+          m = json.load(open('payload.json'))
+          for path, e in m['__files'].items():
+              d = os.path.dirname(path)
+              if d: os.makedirs(d, exist_ok=True)
+              data = base64.b64decode(e['b'])
+              if e['gz']: data = gzip.decompress(data)
+              open(path, 'wb').write(data)
+              print('file', path, len(data))
+          os.makedirs('assets/img', exist_ok=True)
+          for name, url in m['__images'].items():
+              req = urllib.request.Request(url, headers={'User-Agent': 'gh-actions'})
+              with urllib.request.urlopen(req, timeout=90) as r:
+                  b = r.read()
+              assert len(b) > 1000, name
+              open('assets/img/' + name, 'wb').write(b)
+              print('img', name, len(b))
+          PY
+          rm -f payload.json
+
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Build site: expand payload, fetch 50 images from Figma"
+          git push
