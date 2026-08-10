@@ -1,0 +1,939 @@
+/* ===========================================================================
+   Yandex.Forms Redesign — case study
+   Pixel-perfect implementation of the Figma frame «MacBook Air - 1» (1280 wide)
+   =========================================================================== */
+
+/* ---------- tokens ------------------------------------------------------- */
+:root {
+  --page: 1280px;
+
+  --ink: #18232e;
+  --paper: #f7f5f2;
+  --surface: #e5e5e5;
+  --tint: #f8f7f4;
+
+  --orange: #f19d4c;
+  --orange-soft: #ffc389;
+  --red: #fa3e5a;
+  --red-2: #e25167;
+  --green: #29aa3e;
+
+  --hero-a: #d6d3c9;
+  --hero-b: #f9ba7d;
+  --grad-a: #e2f1e4;
+  --grad-b: #ffddbb;
+
+  --r-8: 8px;
+  --r-12: 12px;
+  --r-16: 16px;
+  --r-24: 24px;
+  --r-32: 32px;
+  --r-44: 44px;
+
+  --sh-img: 0 8px 100px -4px rgba(39, 55, 69, 0.24);
+  --sh-img-strong: 0 8px 100px -4px rgba(39, 55, 69, 0.3);
+  --sh-card: 0 4px 44px 0 rgba(39, 55, 69, 0.1);
+  --sh-card-strong: 0 4px 44px 0 rgba(39, 55, 69, 0.25);
+  --sh-card-up: 0 -4px 44px 0 rgba(39, 55, 69, 0.25);
+  --sh-soft: 0 0 36px 0 rgba(39, 55, 69, 0.15);
+  --sh-soft-45: 0 -4px 45px 0 rgba(39, 55, 69, 0.25);
+
+  /* тени для повёрнутых png с прозрачностью — идут по альфа-каналу, а не по боксу */
+  --ds-img-strong: drop-shadow(0 4px 25px rgba(39, 55, 69, 0.28));
+  --ds-card: drop-shadow(0 2px 11px rgba(39, 55, 69, 0.12));
+  --ds-card-strong: drop-shadow(0 2px 11px rgba(39, 55, 69, 0.26));
+  --ds-card-up: drop-shadow(0 -2px 11px rgba(39, 55, 69, 0.26));
+  --ds-soft: drop-shadow(0 0 9px rgba(39, 55, 69, 0.16));
+  --ds-soft-45: drop-shadow(0 -2px 11px rgba(39, 55, 69, 0.26));
+
+  --font: 'Gilroy', 'Satoshi', 'Poppins', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', sans-serif;
+  --font-alt: 'Gotham Pro', 'Satoshi', 'Poppins', -apple-system, sans-serif;
+  --font-meta: 'Satoshi', 'Gilroy', 'Poppins', -apple-system, sans-serif;
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---------- reset -------------------------------------------------------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; overflow-x: clip; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
+}
+
+p, h1, h2, h3, h4, figure { margin: 0; }
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+
+/* грануляция — процедурный шум вместо растровой текстуры из макета */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
+}
+
+/* ---------- page canvas -------------------------------------------------- */
+.page {
+  width: var(--page);
+  margin: 0 auto;
+  padding-top: 116px;   /* хедер 88 + 28 воздуха, как в макете */
+  position: relative;
+}
+
+/* ---------- typography --------------------------------------------------- */
+.eyebrow {
+  font-family: var(--font);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 16px;
+  text-transform: uppercase;
+  color: rgba(24, 35, 46, 0.3);
+}
+
+.label {
+  font-family: var(--font-alt);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  text-transform: uppercase;
+  color: rgba(24, 35, 46, 0.4);
+  text-align: left;
+  align-self: flex-start;
+}
+
+.label--lg {
+  font-family: var(--font-alt);
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 26px;
+  color: rgba(24, 35, 46, 0.4);
+  text-transform: none;
+}
+
+.h2 {
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 36px;
+  color: rgba(24, 35, 46, 0.8);
+  text-align: center;
+}
+
+.h3 {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 24px;
+  color: rgba(24, 35, 46, 0.8);
+}
+
+.h3 .dim,
+.h2 .dim { color: rgba(24, 35, 46, 0.4); }
+
+.body-16 {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 18px;
+  color: rgba(24, 35, 46, 0.8);
+}
+.body-16 p + p { margin-top: 16px; }
+
+.body-18 {
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 20px;
+}
+
+.accent-italic {
+  font-weight: 700;
+  font-style: italic;
+  color: var(--red-2);
+}
+
+/* ---------- header ------------------------------------------------------- */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 400;
+  height: 88px;
+  display: flex;
+  justify-content: center;
+  background: rgba(247, 245, 242, 0.6);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  transition: transform 0.45s var(--ease), background 0.35s linear;
+}
+.header.is-hidden { transform: translateY(-100%); }
+
+.header__inner {
+  width: var(--page);
+  height: 100%;
+  padding: 0 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1 0 0;
+  min-width: 0;
+  font-size: 20px;
+  line-height: 20px;
+  text-transform: uppercase;
+  color: #000;
+  white-space: nowrap;
+}
+.nav--right { justify-content: flex-end; }
+.nav__cap { opacity: 0.5; }
+
+.nav a { position: relative; transition: opacity 0.25s var(--ease); }
+.nav a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.35s var(--ease-out);
+}
+.nav a:hover::after,
+.nav a.is-current::after { transform: scaleX(1); }
+.nav a.is-current { opacity: 1; }
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  flex: none;
+  overflow: hidden;
+  background: linear-gradient(140deg, #cfd6dd, #9fb0c0);
+  transition: transform 0.4s var(--ease-out);
+}
+.avatar:hover { transform: scale(1.08) rotate(-3deg); }
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+/* scroll progress */
+.progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--orange), var(--red));
+  z-index: 401;
+}
+
+/* =========================================================================
+   HERO
+   ========================================================================= */
+.hero { padding: 20px; padding-top: 20px; }
+
+.hero__card {
+  position: relative;
+  border-radius: var(--r-44);
+  overflow: hidden;
+  padding: 24px 0 28px;
+  background: linear-gradient(125.75deg, var(--hero-a) 0.85%, var(--hero-b) 98.83%);
+}
+
+.hero__inner {
+  padding: 0 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 80px;
+}
+
+.hero__meta {
+  width: 100%;
+  padding: 0 4px;
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-meta);
+  font-size: 20px;
+  line-height: 20px;
+  color: rgba(255, 255, 255, 0.8);
+  white-space: nowrap;
+}
+
+.hero__stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.hero__title {
+  font-weight: 700;
+  font-size: 84px;
+  line-height: 74px;
+  text-align: center;
+  text-transform: uppercase;
+  background-image: linear-gradient(180deg, #fff 0%, rgba(255, 255, 255, 0.4) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.glass {
+  width: 100%;
+  padding: 24px;
+  border-radius: var(--r-32);
+  background: rgba(255, 255, 255, 0.04);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero__shot {
+  width: 1120px;
+  height: 620.54px;
+  border-radius: var(--r-16);
+  overflow: hidden;
+}
+.hero__shot img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+
+/* =========================================================================
+   SECTION SHELLS
+   ========================================================================= */
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.section--about { padding: 64px 60px 100px; gap: 12px; }
+.section--problem { padding: 64px 60px 100px; gap: 36px; }
+.section--solution { padding: 64px 60px 100px; gap: 36px; }
+.section--outcome { padding: 64px 80px 164px; gap: 44px; }
+.section--actions { padding: 64px 80px 164px; gap: 28px; }
+.section--design { padding: 64px 80px 164px; gap: 28px; }
+.section--result { padding: 16px 16px 100px; gap: 32px; }
+
+.section__head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+/* about — градиентный заголовок */
+.about__title {
+  width: 100%;
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 36px;
+  text-align: center;
+  background-image: linear-gradient(
+    106.72deg,
+    rgba(24, 35, 46, 0.4) 34.35%,
+    var(--orange) 64.91%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* =========================================================================
+   CARDS
+   ========================================================================= */
+.card {
+  background: var(--surface);
+  border-radius: var(--r-24);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.card--dark { background: var(--ink); }
+.card--dark .h3 { color: rgba(229, 229, 229, 0.8); }
+.card--dark .body-18 { color: rgba(229, 229, 229, 0.6); }
+
+/* --- problem grid ------------------------------------------------------- */
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+.grid__row { display: flex; gap: 12px; align-items: stretch; }
+.grid__row > .card { flex: 1 0 0; min-width: 0; }
+
+.card--pt28 { padding: 28px 40px 40px; gap: 16px; }
+.card--pt40 { padding: 40px 40px 28px; gap: 20px; }
+.grid__row > .card--wide { flex: 0 0 769px; padding: 28px 40px; justify-content: space-between; }
+.grid__row > .card--narrow { flex: 0 0 379px; }
+.card--wide .shot--editor { flex: none; }
+
+.shot {
+  border-radius: var(--r-8);
+  overflow: hidden;
+  box-shadow: var(--sh-img);
+  background: #fff;
+}
+.shot img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+
+.shot--theme { width: 299px; height: 180px; }
+.shot--editor { width: 705px; height: 280px; }
+
+.stack-list { display: flex; flex-direction: column; gap: 12px; }
+.stack-list .rule {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(24, 35, 46, 0) 0%,
+    rgba(24, 35, 46, 0.1) 20%,
+    rgba(24, 35, 46, 0) 100%
+  );
+}
+
+/* --- solution ------------------------------------------------------------ */
+.versus {
+  position: relative;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  width: 100%;
+}
+.versus .card {
+  width: 400px;
+  height: 298px;
+  flex: none;
+  padding: 28px 40px 40px;
+  justify-content: space-between;
+  gap: 0;
+}
+.versus .card--dark { text-align: right; align-items: flex-end; }
+.versus .card--dark > * { width: 100%; }
+.versus__mark {
+  position: absolute;
+  left: 50%;
+  top: 131px;
+  transform: translateX(-50%);
+  font-weight: 700;
+  font-style: italic;
+  font-size: 36px;
+  line-height: 36px;
+  color: var(--red);
+}
+
+/* --- outcome ------------------------------------------------------------- */
+.outcome { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+.outcome__row { display: flex; gap: 12px; justify-content: center; }
+
+.metric {
+  width: 365px;
+  height: 320px;
+  flex: none;
+  border-radius: var(--r-24);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: linear-gradient(135deg, var(--grad-a) 0%, var(--grad-b) 100%);
+}
+.metric__value {
+  font-weight: 500;
+  font-size: 84px;
+  line-height: 70px;
+  letter-spacing: 5px;
+  color: rgba(24, 35, 46, 0.8);
+}
+
+.note {
+  flex: 1 0 0;
+  height: 200px;
+  border-radius: var(--r-24);
+  padding: 40px;
+  background: linear-gradient(135deg, var(--grad-a) 55.3%, var(--surface) 100%);
+}
+
+/* =========================================================================
+   CHAPTER DIVIDER
+   ========================================================================= */
+/* блоб намеренно выходит за границы блока — в макете фрейм не обрезает контент */
+.chapter {
+  position: relative;
+  height: 182px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.chapter__blob {
+  position: absolute;
+  left: 50%;
+  top: 56px;
+  width: 2343px;
+  height: 429px;
+  margin-left: -1122px;
+  border-radius: 50%;
+  filter: blur(148px);
+  will-change: transform;
+}
+.chapter--home .chapter__blob { background: var(--orange-soft); }
+.chapter--editor .chapter__blob { background: rgba(41, 170, 62, 0.25); }
+.chapter--styles .chapter__blob { background: rgba(250, 62, 90, 0.25); }
+
+.chapter__title {
+  position: relative;
+  font-weight: 700;
+  font-size: 84px;
+  line-height: 70px;
+  letter-spacing: 40px;
+  text-indent: 40px;
+  text-transform: uppercase;
+  text-align: center;
+  background-image: linear-gradient(180deg, #fff 0%, rgba(255, 255, 255, 0.2) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* =========================================================================
+   COLLAGE (old-interface pain points)
+   ========================================================================= */
+.collage {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+.collage .card {
+  position: absolute;
+  padding: 40px;
+  gap: 8px;
+}
+.collage .card--shot {
+  padding: 12px;
+  gap: 12px;
+  align-items: center;
+}
+.collage .card--shot .label { margin-top: 4px; }
+.collage .card--shot > .label { left: 14px; right: auto; text-align: left; }
+.collage .shot { box-shadow: none; }
+
+/* =========================================================================
+   MY ACTIONS
+   ========================================================================= */
+.paper-card {
+  width: 800px;
+  background: #fff;
+  border-radius: var(--r-44);
+  padding: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.step { display: flex; flex-direction: column; gap: 8px; }
+.step__rule {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(24, 35, 46, 0) 0%,
+    rgba(24, 35, 46, 0.2) 20%,
+    rgba(24, 35, 46, 0) 100%
+  );
+}
+.bullets { display: flex; flex-direction: column; gap: 16px; margin: 0; padding: 0; list-style: none; }
+.bullets li { display: flex; gap: 8px; }
+.bullets li::before { content: '•'; flex: none; }
+
+.step__figure { border-radius: var(--r-16); overflow: hidden; margin-top: 8px; }
+.step__figure img { width: 100%; }
+
+.step__figures { position: relative; height: 183px; margin-top: 8px; }
+.step__figures img { position: absolute; }
+
+/* =========================================================================
+   SO WHAT'S THE DESIGN — feature cards
+   ========================================================================= */
+.feature {
+  position: relative;
+  width: 1120px;
+  border-radius: var(--r-32);
+  background: var(--surface);
+  overflow: hidden;
+}
+.feature-row {
+  display: flex;
+  gap: 28px;
+  width: 1120px;
+}
+
+.feature__copy {
+  position: absolute;
+  width: 372px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.feature__copy .h2 { text-align: left; font-size: 36px; line-height: 36px; }
+.feature__art { position: absolute; inset: 0; }
+.feature__art .blob {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform;
+}
+.feature__art .pic {
+  position: absolute;
+  overflow: hidden;
+  background: #fff;
+}
+.feature__art .pic img { width: 100%; height: 100%; object-fit: cover; }
+.feature__art .pic--plain { background: transparent; }
+
+/* =========================================================================
+   SHOWCASE (full-bleed product shots)
+   ========================================================================= */
+.showcase {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+.showcase__blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  will-change: transform;
+}
+.showcase__item {
+  position: relative;
+  width: 1232px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.showcase__glass {
+  width: 100%;
+  padding: 24px;
+  border-radius: var(--r-32);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+.showcase__glass--bright { background: rgba(255, 255, 255, 0.1); }
+.showcase__shot {
+  width: 1184px;
+  border-radius: var(--r-16);
+  overflow: hidden;
+  background: #fff;
+}
+.showcase__shot img { width: 100%; display: block; }
+
+/* =========================================================================
+   RESULT
+   ========================================================================= */
+.result-card {
+  width: 1248px;
+  background: #fff;
+  border-radius: var(--r-44);
+  padding: 60px 0 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  position: relative;
+}
+.result-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 780px;
+}
+.result-item .body-16 { text-align: center; }
+.result-rule {
+  width: 1280px;
+  height: 1px;
+  flex: none;
+  background: linear-gradient(
+    90deg,
+    rgba(24, 35, 46, 0) 0%,
+    rgba(24, 35, 46, 0.2) 40%,
+    rgba(24, 35, 46, 0) 100%
+  );
+}
+
+/* =========================================================================
+   FOOTER
+   ========================================================================= */
+.footer {
+  padding: 0 60px 80px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 16px;
+  line-height: 20px;
+  color: rgba(24, 35, 46, 0.4);
+  text-transform: uppercase;
+}
+.footer a { transition: color 0.25s var(--ease); }
+.footer a:hover { color: var(--ink); }
+.footer__links { display: flex; gap: 16px; }
+
+/* =========================================================================
+   MOTION
+   ========================================================================= */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+  will-change: opacity, transform;
+}
+[data-reveal].is-in { opacity: 1; transform: none; }
+
+[data-reveal-stagger] > * {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+}
+[data-reveal-stagger].is-in > * { opacity: 1; transform: none; }
+
+.card, .metric, .note, .feature { transition: transform 0.5s var(--ease-out), box-shadow 0.5s var(--ease-out); }
+.grid .card:hover, .metric:hover, .note:hover { transform: translateY(-4px); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  [data-reveal],
+  [data-reveal-stagger] > * { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .chapter__blob, .showcase__blob, .feature__art .blob { transform: none !important; }
+}
+
+/* =========================================================================
+   FOCUS
+   ========================================================================= */
+:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* =========================================================================
+   RESPONSIVE
+   ---------------------------------------------------------------------------
+   >= 1320px — макет один в один, 1280px
+   1024–1319  — полотно масштабируется целиком, вёрстка не меняется
+   < 1024     — честная перекладка: колонки схлопываются, коллажи и
+                художественные сцены сжимаются под ширину экрана
+   ========================================================================= */
+
+@media (max-width: 1319px) and (min-width: 1024px) {
+  .page, .header__inner { zoom: calc(100vw / 1320); }
+}
+
+@media (max-width: 1023px) {
+  :root { --gutter: 20px; }
+
+  .page { width: 100%; padding-top: 72px; }
+
+  /* ---------- header ---------- */
+  .header { height: 56px; }
+  .header__inner { width: 100%; padding: 0 var(--gutter); gap: 12px; }
+  .nav { font-size: 15px; gap: 12px; }
+  .avatar { width: 30px; height: 30px; }
+
+  /* ---------- typography ---------- */
+  .h2 { font-size: clamp(22px, 5.6vw, 36px); line-height: 1.08; }
+  .h3 { font-size: clamp(17px, 4.4vw, 24px); line-height: 1.16; }
+  .body-16, .body-18 { font-size: 15px; line-height: 1.35; }
+  .eyebrow { font-size: 13px; line-height: 1.2; }
+  .label { font-size: 12px; }
+  .label--lg { font-size: 16px; line-height: 1.3; }
+  .about__title { font-size: clamp(22px, 5.6vw, 36px); line-height: 1.12; }
+
+  /* переносы, расставленные под 1280, на узком экране только мешают */
+  .h2 br, .about__title br, .body-16 br, .result-item .body-16 br { display: none; }
+
+  /* ---------- hero ---------- */
+  .hero { padding: 12px; }
+  .hero__card { border-radius: 24px; padding: 16px 0 18px; }
+  .hero__inner { padding: 0 12px; gap: clamp(24px, 7vw, 80px); }
+  .hero__meta { font-size: 12px; padding: 0; }
+  .hero__title { font-size: clamp(30px, 8.4vw, 84px); line-height: 0.9; }
+  .glass { padding: 8px; border-radius: 16px; }
+  .hero__shot { width: 100%; height: auto; border-radius: 10px; }
+  .hero__shot img { height: auto; }
+
+  /* ---------- секции ---------- */
+  .section--about   { padding: 40px var(--gutter) 48px; }
+  .section--problem,
+  .section--solution { padding: 40px var(--gutter) 56px; gap: 24px; }
+  .section--outcome,
+  .section--actions,
+  .section--design   { padding: 40px var(--gutter) 64px; gap: 20px; }
+  .section--result   { padding: 12px var(--gutter) 56px; }
+
+  /* ---------- карточки-сетки ---------- */
+  .grid__row { flex-direction: column; }
+  .grid__row > .card,
+  .grid__row > .card--wide,
+  .grid__row > .card--narrow { flex: 1 1 auto; width: 100%; }
+  .card, .card--pt28, .card--pt40, .grid__row > .card--wide { padding: 24px; }
+  .shot--theme, .shot--editor { width: 100%; height: auto; }
+  .shot--theme img, .shot--editor img { height: auto; }
+  .stack-list .rule { width: 100%; }
+
+  /* ---------- versus ---------- */
+  .versus { flex-direction: column; }
+  .versus .card { width: 100%; height: auto; padding: 24px; gap: 16px; }
+  .versus .card--dark { text-align: left; align-items: flex-start; order: 0; }
+  .versus__mark { position: static; transform: none; order: 1; }
+  .versus .card:not(.card--dark) { order: 2; }
+
+  /* ---------- outcome ---------- */
+  .outcome__row { flex-direction: column; }
+  .metric { width: 100%; height: auto; min-height: 200px; padding: 24px; gap: 32px; }
+  .metric__value { font-size: clamp(44px, 13vw, 84px); line-height: 1; letter-spacing: 2px; }
+  .note { width: 100%; height: auto; padding: 24px; }
+
+  /* ---------- разделители глав ---------- */
+  .chapter { height: auto; padding: 48px var(--gutter); overflow: hidden; }
+  .chapter__title {
+    font-size: clamp(30px, 8vw, 84px);
+    line-height: 1.1;
+    letter-spacing: clamp(6px, 2.6vw, 40px);
+    text-indent: clamp(6px, 2.6vw, 40px);
+  }
+  .chapter__blob {
+    width: 160%; margin-left: -80%; height: 240px; top: 20px;
+    filter: blur(70px);
+  }
+
+  /* ---------- коллажи: из абсолютной раскладки в колонку ---------- */
+  .collage {
+    height: auto !important;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 0 var(--gutter);
+  }
+  .collage .card {
+    position: static !important;
+    left: auto !important; top: auto !important;
+    width: 100% !important; height: auto !important;
+    padding: 24px;
+  }
+  .collage .card--shot { padding: 12px; }
+  .collage .card--shot > .label {
+    position: static !important;
+    left: auto !important; top: auto !important;
+    margin: 4px 0 8px 4px;
+  }
+  .collage .shot {
+    position: static !important;
+    left: auto !important; top: auto !important;
+    width: 100% !important; height: auto !important;
+  }
+  .collage .shot img { height: auto; }
+  .loose { display: none; }
+
+  /* ---------- «my actions» ---------- */
+  .paper-card { width: 100%; padding: 24px 20px; gap: 24px; border-radius: 28px; }
+  .step__figure { width: 100% !important; margin-left: 0 !important; }
+  .step__figure img { width: 100% !important; height: auto !important; }
+  .step__figures {
+    position: static;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .step__figures img {
+    position: static !important;
+    left: auto !important; top: auto !important;
+    width: 100% !important; height: auto !important;
+    border-radius: 8px;
+  }
+
+  /* ---------- «so what's the design» ---------- */
+  .feature-row { flex-direction: column; gap: 20px; width: 100%; }
+  .feature {
+    width: 100% !important;
+    height: auto !important;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+  }
+  .feature__copy {
+    position: static !important;
+    left: auto !important; top: auto !important;
+    width: auto !important;
+    padding: 24px 20px 0;
+    align-items: flex-start !important;
+  }
+  .feature__copy .h2,
+  .feature__copy .body-16 { text-align: left !important; }
+  /* .feature__art получает высоту и transform из js — см. fitStages() */
+  .feature__copy { order: 0; }
+  .feature__art {
+    position: relative !important;
+    inset: auto !important;
+    order: 1;
+    width: 100%;
+    margin: 16px 0 0;
+    overflow: visible;
+  }
+
+  /* ---------- showcase ---------- */
+  .showcase { padding: 24px var(--gutter) 40px !important; gap: 40px !important; }
+  .showcase__item { width: 100%; gap: 12px; }
+  .showcase__glass { padding: 8px; border-radius: 16px; }
+  .showcase__shot { width: 100% !important; height: auto !important; border-radius: 10px; }
+  .showcase__shot img { height: auto; }
+  .showcase__blob {
+    width: 160% !important; height: 55vh !important;
+    left: -30% !important; top: 10% !important;
+    filter: blur(80px) !important;
+  }
+
+  /* ---------- результат ---------- */
+  .result-card { width: 100%; padding: 32px 20px 40px; border-radius: 28px; gap: 20px; }
+  .result-item { width: 100%; }
+  .result-rule { width: 100%; }
+
+  /* ---------- футер ---------- */
+  .footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 0 var(--gutter) 48px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 759px) {
+  .nav--right { display: none; }
+  .nav__cap { display: none; }
+}
