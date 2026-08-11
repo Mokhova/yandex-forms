@@ -493,6 +493,7 @@ body::before {
   justify-content: center;
 }
 .chapter__blob {
+  z-index: -1;
   position: absolute;
   left: 50%;
   top: 56px;
@@ -560,12 +561,7 @@ body::before {
 .step__rule {
   height: 1px;
   width: 100%;
-  background: linear-gradient(
-    90deg,
-    rgba(24, 35, 46, 0) 0%,
-    rgba(24, 35, 46, 0.2) 20%,
-    rgba(24, 35, 46, 0) 100%
-  );
+  background: rgba(24, 35, 46, 0.2);
 }
 .bullets { display: flex; flex-direction: column; gap: 16px; margin: 0; padding: 0; list-style: none; }
 .bullets li { display: flex; gap: 8px; }
@@ -809,26 +805,40 @@ body::before {
   .grid__row > .card,
   .grid__row > .card--wide,
   .grid__row > .card--narrow { flex: 1 1 auto; width: 100%; }
-  .card, .card--pt28, .card--pt40, .grid__row > .card--wide { padding: 24px; }
+  .card, .card--pt28, .card--pt40, .grid__row > .card--wide { padding: 24px; gap: 8px; }
   .shot--theme, .shot--editor { width: 100%; height: auto; }
   .shot--theme img, .shot--editor img { height: auto; }
   .stack-list .rule { width: 100%; }
 
   /* ---------- versus ---------- */
-  .versus { flex-direction: column; }
+  .versus { flex-direction: column; position: relative; }
   .versus .card { width: 100%; height: auto; padding: 24px; gap: 16px; }
   .versus .card--dark { text-align: left; align-items: flex-start; order: 0; }
-  .versus__mark { position: static; transform: none; order: 1; }
   .versus .card:not(.card--dark) { order: 2; }
+  .versus__mark {
+    position: absolute;
+    left: 0; right: 0; top: 0; bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
 
   /* ---------- outcome ---------- */
   .outcome__row { flex-direction: column; }
   .metric { width: 100%; height: auto; min-height: 200px; padding: 24px; gap: 32px; }
   .metric__value { font-size: clamp(44px, 13vw, 84px); line-height: 1; letter-spacing: 2px; }
   .note { width: 100%; height: auto; padding: 24px; }
+  .outcome__row .note {
+    flex: none;              /* базовый flex:1 0 0 в колонке съедает height */
+    height: 100px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+  }
 
   /* ---------- разделители глав ---------- */
-  .chapter { height: auto; padding: 48px var(--gutter); overflow: hidden; }
+  .chapter { height: auto; padding: 48px var(--gutter); overflow: visible; }
   .chapter__title {
     font-size: clamp(30px, 8vw, 84px);
     line-height: 1.1;
@@ -846,7 +856,7 @@ body::before {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    padding: 0 var(--gutter);
+    padding: 0 var(--gutter) 40px;
   }
   .collage .card {
     position: static !important;
@@ -899,11 +909,14 @@ body::before {
     position: static !important;
     left: auto !important; top: auto !important;
     width: auto !important;
-    padding: 24px 20px 0;
+    padding: 40px 28px 12px;
+    gap: 6px;
     align-items: flex-start !important;
   }
   .feature__copy .h2,
   .feature__copy .body-16 { text-align: left !important; }
+  .feature__copy .h2 { line-height: 32px; }
+  .feature__copy .body-16 { font-size: 14px; line-height: 16px; }
   /* .feature__art получает высоту и transform из js — см. fitStages() */
   .feature__copy { order: 0; }
   .feature__art {
@@ -911,7 +924,7 @@ body::before {
     inset: auto !important;
     order: 1;
     width: 100%;
-    margin: 16px 0 0;
+    margin: 16px auto 0;      /* ширину и zoom проставляет fitStages() */
     overflow: visible;
   }
 
