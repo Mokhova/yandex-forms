@@ -274,6 +274,32 @@
   }
 
   /* -----------------------------------------------------------------------
+     6. Аватар в шапке
+     ---------------------------------------------------------------------
+     Есть только там, где в герое стоит большой портрет: пока портрет виден,
+     мелкая копия в шапке — лишний дубль, поэтому она проявляется ровно
+     в тот момент, когда портрет целиком уехал под шапку.
+     --------------------------------------------------------------------- */
+  function initAvatarReveal() {
+    var avatar = document.querySelector('.avatar');
+    var portrait = document.querySelector('.portrait');
+    if (!avatar || !portrait) return;
+
+    avatar.classList.add('avatar--deferred');
+    var header = document.getElementById('header');
+
+    function sync() {
+      var h = header ? header.offsetHeight : 88;
+      avatar.classList.toggle('is-shown', portrait.getBoundingClientRect().bottom <= h);
+    }
+
+    sync();
+    window.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+    window.addEventListener('load', sync);
+  }
+
+  /* -----------------------------------------------------------------------
      4. Smooth anchor scrolling with header offset
      --------------------------------------------------------------------- */
   function initAnchors() {
@@ -298,6 +324,7 @@
 
   function boot() {
     guardImages();
+    initAvatarReveal();
     initReveal();
     initCounters();
     fitStages();
