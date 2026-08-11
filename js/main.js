@@ -268,7 +268,8 @@
 
       art.style.width = bw + 'px';
       art.style.height = bh + 'px';
-      art.style.zoom = String(Math.min(avail / bw, 1.6));
+      // на узком экране сцена занимает 80% ширины, а не всю
+      art.style.zoom = String(Math.min((avail * 0.8) / bw, 1.6));
     });
   }
 
