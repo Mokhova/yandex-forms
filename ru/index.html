@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="ru"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Редизайн Яндекс.Форм — Екатерина Мохова</title>
+<meta name="description" content="Редизайн Яндекс.Форм: главная и список, конструктор, темы. UX-исследования, продуктовый UI и спеки для разработки. Кейс Екатерины Моховой.">
+<meta name="author" content="Ekaterina Mokhova">
+<meta property="og:title" content="Редизайн Яндекс.Форм — Екатерина Мохова">
+<meta property="og:description" content="Как за год переписали сервис и заодно починили опыт: главная, конструктор и темы.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/img/hero-editor.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#f7f5f2">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../css/fonts.css">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="alternate" hreflang="en" href="https://mokhova.github.io/yandex-forms/">
+<link rel="alternate" hreflang="ru" href="https://mokhova.github.io/yandex-forms/ru/">
+<link rel="alternate" hreflang="x-default" href="https://mokhova.github.io/yandex-forms/">
+</head>
+<body>
+
+<div class="progress" id="progress" style="transform: scaleX(0);"></div>
+
+<header class="header" id="header">
+  <div class="header__inner">
+    <nav class="nav">
+      <span class="nav__cap">Разделы:</span>
+      <a href="#homepage" data-nav="homepage">главная</a>
+      <a href="#editor" data-nav="editor">конструктор</a>
+      <a href="#styles" data-nav="styles">темы</a>
+    </nav>
+    <a class="avatar" href="/" aria-label="About me">
+      <img src="../assets/img/avatar.png" alt="">
+    </a>
+    <nav class="nav nav--right">
+      <span class="nav__cap">Контакты:</span>
+      <a href="/resume.pdf" target="_blank" rel="noopener">резюме</a>
+      <a href="mailto:katecherno@proton.me">почта</a>
+      <a href="https://www.linkedin.com/in/екатерина-мохова-a036a053/" target="_blank" rel="noopener">linkedin</a>
+    <span class="lang"><a href="../" hreflang="en">EN</a><a href="#" class="is-current" aria-current="true" hreflang="ru">RU</a></span></nav>
+  </div>
+</header>
+
+<main class="page" id="top">
+
+  <!-- ==================================================================
+       HERO
+       ================================================================== -->
+  <section class="hero">
+    <div class="hero__card">
+      <div class="hero__inner">
+        <div class="hero__meta">
+          <p>(UX) (UI) (WEB)</p>
+          <p>(2024—25)</p>
+        </div>
+        <div class="hero__stack">
+          <h1 class="hero__title" data-hero-title="" style="transform: translateY(0px); opacity: 1;">Яндекс.Формы <br>редизайн</h1>
+          <div class="glass" data-parallax="0.06" style="transform: translate3d(0px, -17.6px, 0px);">
+            <figure class="hero__shot" style="transform: perspective(1400px) rotateX(0deg) scale(1); transform-origin: 50% 0%;">
+              <img src="../assets/img/hero-editor.png" alt="The new Yandex.Forms editor">
+            </figure>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================================================================
+       ABOUT
+       ================================================================== -->
+  <section class="section section--about">
+    <p class="eyebrow" data-reveal="">(о проекте)</p>
+    <h2 class="about__title" data-reveal="">Конструктор опросов, квизов и любых других форм <br>для сотрудников Яндекса, <br>интегрированный с внутренними сервисами</h2>
+  </section>
+
+  <!-- ==================================================================
+       PROBLEM
+       ================================================================== -->
+  <section class="section section--problem">
+    <div class="section__head" data-reveal="">
+      <p class="eyebrow">(проблема)</p>
+      <h2 class="h2">Формы сильно отстали</h2>
+    </div>
+
+    <div class="grid" data-reveal-stagger="">
+      <div class="grid__row" style="transition-delay: 0ms;">
+        <div class="card card--pt28">
+          <p class="label">(боли пользователей)</p>
+          <p class="h3">Медленно, с багами, половины возможностей нет. <span class="dim">Большие формы и любая логика собирались с болью</span></p>
+        </div>
+        <div class="card">
+          <p class="label">(боли разработки)</p>
+          <p class="h3">Легаси-стек и две параллельные версии, которые нужно поддерживать. <span class="dim">И всё это силами одного фронтендера и двух бэкендеров</span></p>
+        </div>
+        <div class="card card--pt40">
+          <p class="label">(старый редактор тем)</p>
+          <figure class="shot shot--theme">
+            <img loading="lazy" decoding="async" src="../assets/img/old-theme-editor.png" alt="The old theme editor">
+          </figure>
+        </div>
+      </div>
+
+      <div class="grid__row" style="transition-delay: 90ms;">
+        <div class="card card--wide">
+          <p class="label">(старый конструктор)</p>
+          <figure class="shot shot--editor">
+            <img loading="lazy" decoding="async" src="../assets/img/old-editor.png" alt="The old form editor">
+          </figure>
+        </div>
+        <div class="card card--narrow">
+          <p class="label">(боли дизайна)</p>
+          <div class="stack-list">
+            <p class="h3">Нет роадмапа — ни у продукта, ни у процессов</p>
+            <div class="rule"></div>
+            <p class="h3">Часть экосистемы, <br>но её паттерны не используются</p>
+            <div class="rule"></div>
+            <p class="h3">Правки тянутся: <br>единственный фронтендер <br>перегружен</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================================================================
+       SOLUTION
+       ================================================================== -->
+  <section class="section section--solution">
+    <div class="section__head" data-reveal="">
+      <p class="eyebrow">(решение)</p>
+      <h2 class="h2">Переписать весь сервис за год. <br>Жёсткий срок, огромный объём. <br><span class="accent-italic">Здесь наши взгляды разошлись</span></h2>
+    </div>
+
+    <div class="versus" data-reveal-stagger="">
+      <div class="card card--dark" style="transition-delay: 0ms;">
+        <p class="h3">Разработка: <br>переписать, не редизайнить</p>
+        <p class="body-18">Сервис станет быстрее и проще <br>в поддержке, и мы уложимся в срок. <br>Для пользователей это перекраска — в ежедневной работе легче не станет.</p>
+      </div>
+      <div class="card" style="transition-delay: 90ms;">
+        <p class="h3">Дизайнер (я): <br>чинить опыт</p>
+        <p class="body-18 dim" style="color:rgba(24,35,46,.4)">Потратить те же силы с умом: <br>поменять библиотеку, но заодно починить <br>реальные проблемы и дать то, что давно просят</p>
+      </div>
+      <p class="versus__mark" style="transition-delay: 180ms;">VS</p>
+    </div>
+  </section>
+
+  <!-- ==================================================================
+       OUTCOME
+       ================================================================== -->
+  <section class="section section--outcome">
+    <div class="section__head" data-reveal="">
+      <p class="eyebrow">(результат)</p>
+      <h2 class="h2">У нас получилось. <br>Я убедила команду, что редизайн окупится сильнее, <br>а основная лишняя работа ляжет на дизайн, а не на разработку. <br>Первые цифры после релиза это подтвердили.</h2>
+    </div>
+
+    <div class="outcome">
+      <div class="outcome__row" data-reveal-stagger="">
+        <div class="metric" style="transition-delay: 0ms;">
+          <p class="h3">Чаще создают свои темы</p>
+          <p class="metric__value" data-count="1.5" data-suffix="x" data-decimals="1">1.5x</p>
+        </div>
+        <div class="metric" style="transition-delay: 90ms;">
+          <p class="h3">Формы собираются быстрее</p>
+          <p class="metric__value" data-count="-2" data-suffix="min" data-decimals="0">-2мин</p>
+        </div>
+      </div>
+      <div class="outcome__row" data-reveal-stagger="">
+        <div class="note" style="transition-delay: 0ms;"><p class="h3">Положительные отзывы о редизайне — никто не вернулся к старой версии</p></div>
+        <div class="note" style="transition-delay: 90ms;"><p class="h3">Метрики не просели: публикуют так же часто</p></div>
+        <div class="note" style="transition-delay: 180ms;"><p class="h3">Меньше обращений в поддержку</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================================================================
+       CHAPTER 1 — HOMEPAGE
+       ================================================================== -->
+  <section class="chapter chapter--home" id="homepage">
+    <div class="chapter__blob" data-blob="0.12"></div>
+    <h2 class="chapter__title">главная</h2>
+  </section>
+
+  <div class="collage" style="height:662px">
+    <div class="card card--shot" style="left:441px;top:0;width:400px;height:275px">
+      <p class="label" style="position:absolute;left:14px;top:16px">(старая главная)</p>
+      <figure class="shot" style="position:absolute;left:12px;top:44px;width:376px;height:219px;border-radius:16px">
+        <img loading="lazy" decoding="async" src="../assets/img/home-old-homepage.png" alt="The old Forms homepage">
+      </figure>
+    </div>
+    <div class="card" style="left:28px;top:35px;width:401px;height:224px">
+      <p class="h3">Неактуальные формы на главной. <span class="dim">«Последние обновлённые» — это последние отредактированные. После публикации важны совсем другие признаки, например количество ответов</span></p>
+    </div>
+    <div class="card" style="left:853px;top:76px;width:400px;height:152px">
+      <p class="h3">Декоративная главная. <span class="dim">Больше половины страницы — общая статичная информация, а всё важное живёт в списке</span></p>
+    </div>
+    <div class="card" style="left:853px;top:240px;width:400px;height:272px">
+      <p class="h3">Путаница с созданием: способов два. <span class="dim">Кнопка в шапке сервиса и галерея шаблонов. По кнопке создаётся только пустая форма, из шаблона — любая, но сами шаблоны выглядят как статичные картинки</span></p>
+    </div>
+    <div class="card" style="left:28px;top:271px;width:401px;height:248px">
+      <p class="h3">Неполный список: ни групп, ни шаблонов, а фильтры не сохраняются. <span class="dim">Сценарии работы меняются редко, поэтому настраивать одни и те же фильтры в каждый визит утомительно. Группы — часть той же работы</span></p>
+    </div>
+    <div class="card card--shot" style="left:441px;top:287px;width:400px;height:275px">
+      <p class="label" style="position:absolute;left:14px;top:16px">(старый список)</p>
+      <figure class="shot" style="position:absolute;left:12px;top:44px;width:376px;height:219px;border-radius:16px">
+        <img loading="lazy" decoding="async" src="../assets/img/home-old-list.png" alt="The old forms list">
+      </figure>
+    </div>
+  </div>
+
+  <!-- my actions -->
+  <section class="section section--actions">
+    <h2 class="h2" data-reveal="">Что сделала</h2>
+    <article class="paper-card" data-reveal="">
+      <div class="step">
+        <h3 class="h3">01 — Подняла историю</h3>
+        <div class="body-16"><p>Выяснилось, что текущая главная сделана для b2b-сервиса и была лендингом с описанием возможностей. После разделения на внешний и внутренний продукты её перенесли без изменений.</p></div>
+      </div>
+      <div class="step__rule"></div>
+      <div class="step">
+        <h3 class="h3">02 — Составила список вопросов и обработала <br>данные небольших интервью</h3>
+        <ul class="bullets body-16">
+          <li><span>Формы объединяют в группы по смыслу или по отделу, который с ними работает. У таких людей есть регулярные опросы с одинаковыми названиями, и группа помогает понять, кто и когда работает с формой. Сейчас это два независимых списка, что очень неудобно</span></li>
+          <li><span>Сортировка по последнему изменению неактуальна. Все работают по-разному в зависимости от количества форм и задач: кому-то важно видеть формы с новыми ответами, кому-то — по количеству ответов</span></li>
+          <li><span>Некоторые копируют формы и немного меняют, названия остаются одинаковыми — нужен дополнительный маркёр, чтобы отличать</span></li>
+          <li><span>Когда форм мало, табличный вид излишен</span></li>
+        </ul>
+      </div>
+      <div class="step__rule"></div>
+      <div class="step">
+        <h3 class="h3">03 — Выдвинула гипотезу: главная в текущем виде не нужна</h3>
+        <div class="body-16"><p>Нужен дашборд с хайлайтом ключевых изменений. Но дашборд надо кастдевить отдельно, а времени и ресурсов нет — поэтому вкладываться стоит в список. Он и так основной инструмент</p></div>
+      </div>
+      <div class="step__rule"></div>
+      <div class="step">
+        <h3 class="h3">04 — Изучила Яндекс.Метрику <span class="dim"></span></h3>
+        <div class="body-16"><p>Список популярнее главной, его сохраняют в закладки: 17% визитов против 4%. Создание из шаблона и с нуля одинаково популярны. Фильтры настраивают часто, почти в каждый визит</p></div>
+      </div>
+    </article>
+  </section>
+
+  <!-- so what's the design -->
+  <section class="section section--design">
+    <h2 class="h2" data-reveal="">Какой тогда дизайн?</h2>
+
+    <article class="feature" style="height:433px" data-reveal="">
+      <div class="feature__art">
+        <div class="blob" style="left:100px;top:110px;width:440px;height:212px;background:var(--orange-soft);filter:blur(68px)" data-blob="0.05" data-x0="100" data-y0="110"></div>
+        <div class="pic pic--plain" style="left:40.5px;top:63.25px;width:560px;height:305.5px" data-x0="40.5" data-y0="63.25"><img loading="lazy" decoding="async" src="../assets/img/hp-newdesign-1.png" alt=""></div>
+      </div>
+      <div class="feature__copy" style="left:660px;top:128px">
+        <h3 class="h2">Список форм — новая главная</h3>
+        <div class="body-16"><p>Больше не нужно делать закладки и переключаться между страницами</p></div>
+      </div>
+    </article>
+
+    <article class="feature" style="height:433px" data-reveal="">
+      <div class="feature__art">
+        <div class="blob" style="left:541px;top:191px;width:518px;height:51px;background:var(--orange-soft);filter:blur(76px)" data-blob="0.05" data-x0="541" data-y0="191"></div>
+        <div class="pic pic--plain" style="left:520px;top:182px;width:556px;height:69px" data-x0="520" data-y0="182"><img loading="lazy" decoding="async" src="../assets/img/home-d2-create.png" alt=""></div>
+      </div>
+      <div class="feature__copy" style="left:80px;top:128px">
+        <h3 class="h2">Один блок создания</h3>
+        <div class="body-16"><p>Пустая форма — это шаблон без вопросов, поэтому я собрала все шаблоны в одном месте и в одном стиле. Заметно, но компактно, чтобы не отнимать место у списка. И с запасом на рост — в том числе за счёт шаблонов, которые сделают сами пользователи.</p></div>
+      </div>
+    </article>
+
+    <article class="feature" style="height:433px" data-reveal="">
+      <div class="feature__art">
+        <div class="blob" style="left:209px;top:125px;width:291px;height:210px;background:var(--orange-soft);filter:blur(88px)" data-blob="0.05" data-x0="209" data-y0="125"></div>
+        <div class="blob" style="left:185px;top:144px;width:121px;height:114px;background:var(--orange-soft);opacity:.5;filter:blur(34px)" data-x0="185" data-y0="144"></div>
+        <div class="blob" style="left:254px;top:171px;width:121px;height:114px;background:var(--orange-soft);opacity:.5;filter:blur(34px)" data-x0="254" data-y0="171"></div>
+        <div class="pic pic--plain" style="left:111px;top:91px;width:418px;height:252px" data-x0="111" data-y0="91"><img loading="lazy" decoding="async" src="../assets/img/hp-newdesign-3.png" alt=""></div>
+      </div>
+      <div class="feature__copy" style="left:589px;top:128px">
+        <h3 class="h2">Кастомизируемый</h3>
+        <div class="body-16"><p>В зависимости от задач список можно смотреть таблицей или карточками. Добавила и сгруппированный вид</p></div>
+      </div>
+    </article>
+
+    <article class="feature" style="height:433px" data-reveal="">
+      <div class="feature__art">
+        <div class="pic pic--plain" style="left:374px;top:-25px;width:772px;height:483px" data-x0="374" data-y0="-25"><img loading="lazy" decoding="async" src="../assets/img/hp-newdesign-4.png" alt=""></div>
+      </div>
+      <div class="feature__copy" style="left:80px;top:128px">
+        <h3 class="h2">Группы всегда <br>видно</h3>
+        <div class="body-16"><p>В табличном виде — отдельным столбцом, в сгруппированном — заголовком</p></div>
+      </div>
+    </article>
+  </section>
+
+  <!-- showcase -->
+  <section class="showcase" style="padding:32px 0 64px;gap:84px">
+    <div class="showcase__blob" style="left:-25px;top:129px;width:1265px;height:674px;background:var(--orange-soft);opacity:.7" data-blob="0.1"></div>
+    <div class="showcase__item" data-reveal="">
+      <p class="eyebrow">(новая главная)</p>
+      <div class="showcase__glass">
+        <figure class="showcase__shot" style="height:694px"><img loading="lazy" decoding="async" src="../assets/img/home-list.png" alt="The new forms list"></figure>
+      </div>
+    </div>
+    <div class="showcase__blob" style="left:79px;top:1016px;width:1122px;height:603px;background:var(--orange-soft);opacity:.7" data-blob="0.1"></div>
+    <div class="showcase__item" data-reveal="">
+      <p class="eyebrow">(главная с группировкой)</p>
+      <div class="showcase__glass">
+        <figure class="showcase__shot" style="height:694px"><img loading="lazy" decoding="async" src="../assets/img/home-grouped-list.png" alt="The grouped list view"></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- result -->
+  <section class="section section--result">
+    <article class="result-card" data-reveal="">
+      <p class="eyebrow">(какой результат)</p>
+      <div class="result-item">
+        <h3 class="h2">Гипотеза подтвердилась</h3>
+        <div class="body-16"><p>До релиза провели UX-тестирование прототипов и получили подтверждение <br>и положительные отзывы. Люди быстро справлялись с задачами и сразу находили нужные элементы</p></div>
+      </div>
+      <div class="result-rule"></div>
+      <div class="result-item">
+        <h3 class="h2">Стабильные метрики</h3>
+        <div class="body-16"><p>После релиза не было ни негативных отзывов, ни просадки метрик</p></div>
+      </div>
+      <div class="result-rule"></div>
+      <div class="result-item">
+        <h3 class="h2">Фильтры наконец работают</h3>
+        <div class="body-16"><p>Их стали менять в два раза реже, потому что они сохраняются</p></div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ==================================================================
+       CHAPTER 2 — EDITOR
+       ================================================================== -->
+  <section class="chapter chapter--editor" id="editor">
+    <div class="chapter__blob" data-blob="0.12"></div>
+    <h2 class="chapter__title">конструктор</h2>
+  </section>
+
+  <div class="collage" style="height:874px">
+    <div class="card card--shot" style="left:441px;top:0;width:400px;height:275px">
+      <p class="label" style="position:absolute;left:14px;top:16px">(старый конструктор)</p>
+      <figure class="shot" style="position:absolute;left:12px;top:44px;width:376px;height:219px;border-radius:8px">
+        <img loading="lazy" decoding="async" src="../assets/img/editor-old-homepage.png" alt="The old editor">
+      </figure>
+    </div>
+    <div class="card" style="left:28px;top:99px;width:401px;height:272px">
+      <p class="h3">Сложно ориентироваться. <span class="dim">Видно только тип вопроса — число, список, — поэтому два вопроса одного типа не отличить друг от друга. Люди ищут по тексту, а не по типу</span></p>
+    </div>
+    <div class="card" style="left:853px;top:116px;width:400px;height:272px">
+      <p class="h3">Сложно управлять порядком: вопросы добавляются только в конец формы. <span class="dim">Ни подскролла, ни анимации, ни подсказки. Чтобы переместить вопрос, нужен драг-н-дроп, плохо сделанный и по дизайну, и технически</span></p>
+    </div>
+    <div class="card card--shot" style="left:441px;top:287px;width:400px;height:275px">
+      <p class="label" style="position:absolute;left:14px;top:16px">(старый список вопросов)</p>
+      <figure class="shot" style="position:absolute;left:12px;top:44px;width:376px;height:219px;border-radius:8px">
+        <img loading="lazy" decoding="async" src="../assets/img/editor-old-list.png" alt="The old question editing popup">
+      </figure>
+    </div>
+    <div class="card" style="left:28px;top:383px;width:401px;height:248px">
+      <p class="h3">Не видно параметров: картинки, пояснения, ответы и уникальные настройки спрятаны в попап. <span class="dim">Чтобы проверить или отредактировать данные, приходится открывать попап каждого вопроса</span></p>
+    </div>
+    <div class="card" style="left:853px;top:400px;width:400px;height:224px">
+      <p class="h3">Не видно условий: их можно посмотреть, только нажав на иконку. <span class="dim">Некоторые вопросы нужно показывать только при определённых ответах на предыдущие, а иконку часто просто не замечают</span></p>
+    </div>
+    <div class="card" style="left:441px;top:574px;width:400px;height:200px">
+      <p class="h3">Нет условий на страницу. <span class="dim">Пользователи давно просили условия на показ целого шага формы</span></p>
+    </div>
+  </div>
+
+  <section class="section section--actions">
+    <h2 class="h2" data-reveal="">Что сделала</h2>
+    <article class="paper-card" data-reveal="">
+      <div class="step">
+        <h3 class="h3">01 — Изучила фидбек пользователей</h3>
+        <div class="body-16"><p>Прошлась по тому, что люди уже написали, и на этом собрала гипотезы для исследования</p></div>
+      </div>
+      <div class="step__rule"></div>
+      <div class="step">
+        <h3 class="h3">02 — Разобрала, как устроены вопросы</h3>
+        <div class="body-16"><p>Посмотрела техническую сторону: какие данные у каждого типа и как они хранятся. Оказалось, что многие типы отличаются одной настройкой — например, почта и телефон это обычные текстовые поля, просто с разной валидацией</p></div>
+      </div>
+      <div class="step__rule"></div>
+      <div class="step">
+        <h3 class="h3">03 — Посмотрела на цифры</h3>
+        <div class="body-16"><p>Попросила продакта собрать статистику: сколько в формах вопросов и страниц. Чтобы понять, как удобнее сделать навигацию и добавление вопросов и страниц</p></div>
+      </div>
+      <div class="step__rule"></div>
+      <div class="step">
+        <h3 class="h3">04 — Изучила Яндекс.Метрику <span class="dim"></span></h3>
+        <div class="body-16"><p>Какие вопросы и с какими настройками создают чаще. Присвоила каждому верхнеуровневый тип: текст, выбор, число и так далее</p></div>
+        <figure class="step__figure" style="margin-left:-2px;width:708px"><img loading="lazy" decoding="async" src="../assets/img/editor-stats.png" alt="Question type statistics" style="width:708px;height:293px"></figure>
+      </div>
+      <div class="step__rule"></div>
+      <div class="step">
+        <h3 class="h3">05 — Провела UX-исследование</h3>
+        <div class="body-16"><p>Прописала полный скрипт для исследования прототипа и собрала интерактивный прототип в Figma: с анимациями, новым драг-н-дропом и сложными сценариями вроде добавления логики на разные уровни</p></div>
+      </div>
+    </article>
+  </section>
+
+  <section class="section section--design">
+    <h2 class="h2" data-reveal="">Какой тогда дизайн?</h2>
+
+    <article class="feature" style="height:453px" data-reveal="">
+      <div class="feature__art">
+        <div class="blob" style="left:100px;top:121px;width:440px;height:212px;background:rgba(41,170,62,.25);filter:blur(68px)" data-blob="0.05" data-x0="100" data-y0="121"></div>
+        <div class="pic pic--plain" style="left:71px;top:64px;width:498px;height:325px" data-x0="71" data-y0="64"><img loading="lazy" decoding="async" src="../assets/img/editor-d1-card.png" alt=""></div>
+      </div>
+      <div class="feature__copy" style="left:629px;top:96px">
+        <h3 class="h2">Богатая карточка <br>и прямое редактирование</h3>
+        <div class="body-16"><p>Вынесла название, ответы и важные настройки на карточку, а редкие — скрыла. Вёрстка последовательная и блочная: общие блоки есть всегда, уникальные идут в своих типах и только после общих. Не нужно разбираться с каждым типом отдельно. Win!</p><p>Параметры редактируются прямо в карточке, и всё сохраняется автоматически</p></div>
+      </div>
+    </article>
+
+    <article class="feature" style="height:433px" data-reveal="">
+      <div class="feature__art">
+        <div class="pic pic--plain" style="left:520px;top:113px;width:508px;height:208px" data-x0="520" data-y0="113"><img loading="lazy" decoding="async" src="../assets/img/hp-newdesign-5.png" alt=""></div>
+      </div>
+      <div class="feature__copy" style="left:80px;top:128px">
+        <h3 class="h2">Минимум типов</h3>
+        <div class="body-16"><p>Сократила типы вопросов с 27 до 8. Каждый вопрос настраивается под свой тип данных — настройками или валидацией. Добавила типам иконку и цвет, чтобы легче ориентироваться</p></div>
+      </div>
+    </article>
+
+    <article class="feature" style="height:629px" data-reveal="">
+      <div class="feature__art">
+        <div class="blob" style="left:121px;top:277px;width:343px;height:172px;background:rgba(41,170,62,.6);filter:blur(52px)" data-blob="0.05" data-x0="121" data-y0="277"></div>
+        <div class="pic pic--plain" style="left:30.5px;top:63.75px;width:579px;height:501.5px" data-x0="30.5" data-y0="63.75"><img loading="lazy" decoding="async" src="../assets/img/hp-newdesign-6.png" alt=""></div>
+      </div>
+      <div class="feature__copy" style="left:660px;top:226px">
+        <h3 class="h2">Прозрачные условия</h3>
+        <div class="body-16"><p>Добавила условия для страницы. Условия вопроса находятся прямо в карточке, страницы — у начала страницы. Любое условие сворачивается до заголовка: его просто найти, и оно не занимает много места</p></div>
+      </div>
+    </article>
+
+    <article class="feature" style="height:473px" data-reveal="">
+      <div class="feature__art">
+        <div class="blob" style="left:549px;top:224px;width:517px;height:54px;background:var(--green);filter:blur(50px)" data-blob="0.05" data-x0="549" data-y0="224"></div>
+        <div class="pic pic--plain" style="left:447.75px;top:63.75px;width:715.5px;height:345.5px" data-x0="447.75" data-y0="63.75"><img loading="lazy" decoding="async" src="../assets/img/hp-newdesign-7.png" alt=""></div>
+      </div>
+      <div class="feature__copy" style="left:80px;top:148px">
+        <h3 class="h2">Гибкий порядок</h3>
+        <div class="body-16"><p>Вопрос можно добавить в любое место формы. У карточки две области ховера, по наведению на которые появляется нужная кнопка добавления</p></div>
+      </div>
+    </article>
+
+    <article class="feature" style="height:521px" data-reveal="">
+      <div class="feature__art">
+        <div class="blob" style="left:306px;top:148px;width:213px;height:257px;background:rgba(41,170,62,.4);filter:blur(50px)" data-blob="0.05" data-x0="306" data-y0="148"></div>
+        <div class="pic pic--plain" style="left:39px;top:49px;width:569px;height:423px" data-x0="39" data-y0="49"><img loading="lazy" decoding="async" src="../assets/img/hp-newdesign-8.png" alt=""></div>
+      </div>
+      <div class="feature__copy" style="left:660px;top:132px">
+        <h3 class="h2">Удобная навигация</h3>
+        <div class="body-16"><p>Вместо списка вопросов сделала навигацию по конструктору: вынесла и тип, и текст вопроса</p><p>Вложенные вопросы показаны вложенными. <br>Вопросы можно добавлять и удалять прямо отсюда. <br>По нажатию конструктор прокручивается до карточки вопроса. <br>И главное — вопросы можно перемещать прямо в панели навигации</p></div>
+      </div>
+    </article>
+  </section>
+
+  <section class="showcase" style="padding:32px 0 60px">
+    <div class="showcase__blob" style="left:-237px;top:-318px;width:1881px;height:1783px;background:rgba(41,170,62,.25);filter:blur(148px)" data-blob="0.08"></div>
+    <div class="showcase__item" data-reveal="">
+      <p class="label--lg">(новый конструктор)</p>
+      <div class="showcase__glass">
+        <figure class="showcase__shot" style="height:1062px"><img loading="lazy" decoding="async" src="../assets/img/editor-new.png" alt="The new Forms editor"></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="showcase" style="padding:32px 0 60px">
+    <div class="showcase__item" data-reveal="">
+      <p class="label--lg">(несколько страниц)</p>
+      <div class="showcase__glass">
+        <figure class="showcase__shot" style="height:1088px"><img loading="lazy" decoding="async" src="../assets/img/editor-pages.png" alt="A form with several pages and conditions"></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--result" style="padding-bottom:16px">
+    <article class="result-card" data-reveal="">
+      <p class="eyebrow">(какой результат)</p>
+      <div class="result-item">
+        <h3 class="h2">Успешные UX-тесты</h3>
+        <div class="body-16"><p>Все гипотезы подтвердились. Интерфейс вызвал положительное впечатление <br>и не вызвал затруднений</p></div>
+      </div>
+      <div class="result-rule"></div>
+      <div class="result-item">
+        <h3 class="h2">Гладкий релиз</h3>
+        <div class="body-16"><p>Новый конструктор релизили целиком и дали пару месяцев на переход. <br>Больше половины перешли в первую неделю, почти все — за две. <br>Никто не вернулся к старой версии</p></div>
+      </div>
+      <div class="result-rule"></div>
+      <div class="result-item">
+        <h3 class="h2">Улучшение метрик</h3>
+        <div class="body-16"><p>Время работы в конструкторе уменьшается — на минуту и больше в зависимости от размера формы, — <br>при этом количество форм и публикаций осталось прежним. <br>Новый редактор нагляднее, лишние шаги убраны</p></div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ==================================================================
+       CHAPTER 3 — STYLES
+       ================================================================== -->
+  <section class="chapter chapter--styles" id="styles">
+    <div class="chapter__blob" data-blob="0.12"></div>
+    <h2 class="chapter__title">темы</h2>
+  </section>
+
+  <div class="collage" style="height:843px">
+    <div class="card card--shot" style="left:441px;top:0;width:400px;height:275px">
+      <p class="label" style="position:absolute;left:14px;top:16px">(старые темы)</p>
+      <figure class="shot" style="position:absolute;left:12px;top:44px;width:376px;height:219px;border-radius:8px">
+        <img loading="lazy" decoding="async" src="../assets/img/styles-old-style.png" alt="The old style editor">
+      </figure>
+    </div>
+    <div class="card" style="left:28px;top:99px;width:401px;height:200px">
+      <p class="h3">Мало кастомизации. <span class="dim">Люди хотят менять цвета контролов, отступы, маркёр обязательного вопроса и многое другое</span></p>
+    </div>
+    <div class="card" style="left:853px;top:116px;width:400px;height:224px">
+      <p class="h3">Непонятные параметры: для всех настроек один и тот же интерфейс — слайдер. <span class="dim">Значения не показаны, визуализации результата нет — вопросов возникает больше, чем ответов</span></p>
+    </div>
+    <div class="card card--shot" style="left:441px;top:287px;width:400px;height:268px">
+      <p class="label" style="position:absolute;left:14px;top:16px">(старый список тем)</p>
+      <figure class="shot" style="position:absolute;left:12px;top:44px;width:376px;height:212px;border-radius:8px">
+        <img loading="lazy" decoding="async" src="../assets/img/old-style-shot.png" alt="The old style presets">
+      </figure>
+    </div>
+    <div class="card" style="left:28px;top:311px;width:401px;height:248px">
+      <p class="h3">Путаница с цветами. <span class="dim">Темы настраивают редко, а по названиям неясно, какой цвет изменится. Палитры не хватает, и настройки разбросаны по разным местам</span></p>
+    </div>
+    <div class="card" style="left:853px;top:352px;width:400px;height:176px">
+      <p class="h3">Неудобное превью формы. <span class="dim">Нет ни реальных отступов, ни карточки, на которой размещена форма, ни шапки сервиса</span></p>
+    </div>
+    <div class="card" style="left:441px;top:567px;width:400px;height:176px">
+      <p class="h3">Пресеты устарели. <span class="dim">Слишком яркие цвета, низкий контраст, неактуальные фоны и картинки низкого качества</span></p>
+    </div>
+  </div>
+
+  <section class="section section--actions">
+    <h2 class="h2" data-reveal="">Что сделала</h2>
+    <article class="paper-card" data-reveal="">
+      <div class="step">
+        <h3 class="h3">01 — Провела быстрые UX-тесты</h3>
+        <div class="body-16"><p>Коридорные, side-by-side, опросы в Pathway. Гипотезы подтвердились, в том числе количественно</p></div>
+      </div>
+      <div class="step__rule"></div>
+      <div class="step">
+        <h3 class="h3">02 — Изучила Яндекс.Метрику <span class="dim"></span></h3>
+        <div class="body-16"><p>Посмотрела, какие темы и какие параметры самые популярные</p></div>
+      </div>
+      <div class="step__rule"></div>
+      <div class="step">
+        <h3 class="h3">03 — Изучила кастомные темы пользователей</h3>
+        <div class="body-16"><p>Чтобы понять, какой конечный результат им нужен. Некоторые формы стилизованы самописным CSS, <br>поэтому фронтендеры выгрузили все свойства, которые люди использовали</p></div>
+        <div class="step__figures">
+          <img loading="lazy" decoding="async" src="../assets/img/styles-theme-a.png" alt="" style="left:-1px;top:-1px;width:230px;height:185px">
+          <img loading="lazy" decoding="async" src="../assets/img/styles-theme-b.png" alt="" style="left:235px;top:-1px;width:228px;height:138px">
+          <img loading="lazy" decoding="async" src="../assets/img/styles-props.png" alt="" style="left:469px;top:-1px;width:236px;height:185px">
+        </div>
+      </div>
+      <div class="step__rule"></div>
+      <div class="step">
+        <h3 class="h3">04 — Свела всё вместе</h3>
+        <div class="body-16"><p>Из Метрики, UX-исследования и пользовательских стилей собрала конечный список свойств, ранжированный по популярности</p></div>
+      </div>
+    </article>
+  </section>
+
+  <section class="section section--design">
+    <h2 class="h2" data-reveal="">Какой тогда дизайн?</h2>
+
+    <article class="feature" style="height:911px" data-reveal="">
+      <div class="feature__art">
+        <div class="blob" style="left:100px;top:349px;width:440px;height:212px;background:rgba(250,62,90,.25);filter:blur(68px)" data-blob="0.05" data-x0="100" data-y0="349"></div>
+        <div class="pic pic--plain" style="left:40px;top:64px;width:560px;height:783px" data-x0="40" data-y0="64"><img loading="lazy" decoding="async" src="../assets/img/styles-d1-palette.png" alt=""></div>
+      </div>
+      <div class="feature__copy" style="left:660px;top:96px">
+        <h3 class="h2">Полноценная палитра</h3>
+        <div class="body-16"><p>Вынесла все цвета в отдельный блок и показала, какой элемент стилизует каждый цвет.</p><p>Сделала генерацию палитры: когда есть фирменный стиль, все контролы формы можно перекрасить, указав только цвет бренда</p><p>По умолчанию блок показывает три самых ходовых цвета. Нужно точнее — остальные раскрываются. Так интерфейс не нагружает тех, кому это не нужно</p></div>
+      </div>
+    </article>
+
+    <article class="feature" style="height:453px" data-reveal="">
+      <div class="feature__art">
+        <div class="pic pic--plain" style="left:535px;top:42.25px;width:529px;height:368.5px" data-x0="535" data-y0="42.25"><img loading="lazy" decoding="async" src="../assets/img/hp-newdesign-9.png" alt=""></div>
+      </div>
+      <div class="feature__copy" style="left:80px;top:138px">
+        <h3 class="h2">Наглядный</h3>
+        <div class="body-16"><p>Значения параметров я показываю, а не описываю. Люди по-разному называют одни и те же свойства, и никто не угадывает границы значений — проще показать все варианты</p></div>
+      </div>
+    </article>
+
+    <article class="feature" style="height:773px" data-reveal="">
+      <div class="feature__art">
+        <div class="pic pic--plain" style="left:100px;top:64px;width:440px;height:645px" data-x0="100" data-y0="64"><img loading="lazy" decoding="async" src="../assets/img/styles-d3-states.png" alt=""></div>
+      </div>
+      <div class="feature__copy" style="left:600px;top:112px">
+        <h3 class="h2">Упрощённая навигация</h3>
+        <div class="body-16"><p>Сгруппировала свойства по объекту: тексты, фон, кнопки. Так проще ориентироваться.</p><p>А для тех, кому не нужна точечная кастомизация, сделала отдельный блок с самыми популярными свойствами</p></div>
+      </div>
+    </article>
+
+    <article class="feature" style="height:433px" data-reveal="">
+      <div class="feature__art">
+        <div class="pic pic--plain" style="left:566.5px;top:53.5px;width:479px;height:326px" data-x0="566.5" data-y0="53.5"><img loading="lazy" decoding="async" src="../assets/img/hp-newdesign-10.png" alt=""></div>
+      </div>
+      <div class="feature__copy" style="left:80px;top:128px">
+        <h3 class="h2">Спека для разработчиков</h3>
+        <div class="body-16"><p>Прописала все анимации и то, как автоматизировать подбор цветов для дефолтных тем, которые будут добавляться. Сделала прототипы кодом в CodePen</p></div>
+      </div>
+    </article>
+
+    <div class="feature-row" data-reveal-stagger="">
+      <article class="feature" style="width: 546px; height: 302px; transition-delay: 0ms;">
+        <div class="feature__copy" style="left:64px;top:64px;width:418px">
+          <h3 class="h2">Миграция тем</h3>
+          <div class="body-16"><p>Из-за обратной совместимости часть новых свойств разработка не могла сделать прямо по макетам. Темы хранятся в json, и я предложила один раз обновить его при переезде: сохранить кастомные темы пользователей как сервисные. Данные никто не потерял, новый редактор уехал в релиз, и у людей появилась возможность сделать ещё одну «свою» тему. Win-win :)</p></div>
+        </div>
+      </article>
+      <article class="feature" style="width: 546px; height: 302px; transition-delay: 90ms;">
+        <div class="feature__copy" style="left:64px;top:64px;width:418px">
+          <h3 class="h2">Проверка контраста</h3>
+          <div class="body-16"><p>Предложила конкретный npm-пакет: он проверяет контраст текста и фона, контролов и фона, текста внутри контролов. По схеме WCAG</p></div>
+        </div>
+      </article>
+    </div>
+
+    <article class="feature" style="height:1125px" data-reveal="">
+      <div class="feature__copy" style="left:200px;top:112px;width:712px;align-items:center">
+        <h3 class="h2" style="text-align:center;width:100%">Спека внешнего вида формы</h3>
+        <div class="body-16" style="text-align:center"><p>Подробный гайд: как ведут себя все элементы при разных параметрах кастомизации и как выглядят крайние случаи. Заодно решила несколько старых проблем с отображением. Например, как показывать контролы без обводки: добавила возможность убирать внутренние паддинги и описала разработчикам, что в этом случае обычный контрол меняется на контрол без обводки из текущей библиотеки.</p></div>
+      </div>
+      <div class="feature__art">
+        <div class="pic" style="left:40px;top:290px;width:1040px;height:771px;border-radius:8px;background:var(--tint)" data-x0="40" data-y0="290">
+          <img loading="lazy" decoding="async" src="../assets/img/styles-spec.png" alt="" style="width:1016px;height:747px;margin:12px 0 0 12px">
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <section class="showcase" style="padding:32px 0 60px">
+    <div class="showcase__blob" style="left:-51px;top:-183px;width:1382px;height:1209px;background:rgba(250,62,90,.25);filter:blur(148px)" data-blob="0.08"></div>
+    <div class="showcase__item" data-reveal="">
+      <p class="label--lg">(список тем)</p>
+      <div class="showcase__glass showcase__glass--bright">
+        <figure class="showcase__shot" style="height:658px"><img loading="lazy" decoding="async" src="../assets/img/styles-new-a.png" alt="The new style editor"></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="showcase" style="padding:32px 0 60px">
+    <div class="showcase__blob" style="left:4px;top:118px;width:1260px;height:1259px;background:rgba(250,62,90,.25);filter:blur(148px)" data-blob="0.08"></div>
+    <div class="showcase__item" data-reveal="">
+      <p class="label--lg">(создание своей темы)</p>
+      <div class="showcase__glass">
+        <figure class="showcase__shot" style="height:1236px"><img loading="lazy" decoding="async" src="../assets/img/styles-new-b.png" alt="The new style editor, full view"></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--result" style="padding-bottom:16px">
+    <article class="result-card" data-reveal="">
+      <p class="eyebrow">(какой результат)</p>
+      <div class="result-item">
+        <h3 class="h2">Темы стали популярнее</h3>
+        <div class="body-16"><p>После релиза чаще создают свои темы и возвращаются к их редактированию. <br>И чаще выбирают новые пресеты</p></div>
+      </div>
+      <div class="result-rule"></div>
+      <div class="result-item">
+        <h3 class="h2">Новые свойства популярны</h3>
+        <div class="body-16"><p>Уже через месяц после релиза они вошли в топ по использованию</p></div>
+      </div>
+    </article>
+  </section>
+
+  <footer class="footer">
+    <p><a href="/">Екатерина Мохова</a> — (2024—25)</p>
+    <p class="footer__links">
+      <a href="/resume.pdf" target="_blank" rel="noopener">резюме</a>
+      <a href="mailto:katecherno@proton.me">почта</a>
+      <a href="https://www.linkedin.com/in/екатерина-мохова-a036a053/" target="_blank" rel="noopener">linkedin</a>
+    </p>
+  </footer>
+
+</main>
+
+<script src="../js/main.js"></script>
+
+
+</body></html>
