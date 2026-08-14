@@ -6,6 +6,10 @@
    Gotham Pro  — мелкие подписи в скобках
    Satoshi     — мета-строка в hero
 
+   Каждая гарнитура разбита на два сабсета с unicode-range: латиница и
+   кириллица. Английская версия кейса скачивает только латиницу, русская —
+   докачивает кириллицу (около 33 КБ на все начертания).
+
    ВНИМАНИЕ ПРО ЛИЦЕНЗИИ: Gilroy и Gotham Pro — коммерческие шрифты.
    Файлы взяты из твоей локальной коллекции. Для публичного репозитория
    убедись, что твоя лицензия разрешает web-embedding; если нет — удали
@@ -13,36 +17,81 @@
    на Satoshi (у неё открытая лицензия) без единой правки в разметке.
    =========================================================================== */
 
+/* латиница, пунктуация, стрелки, знаки валют */
 @font-face {
   font-family: 'Gilroy';
   src: url('../assets/fonts/Gilroy-Regular.woff2') format('woff2');
   font-weight: 400; font-style: normal; font-display: swap;
+  unicode-range: U+0000-03FF, U+2000-20BF, U+2116-21FF, U+2200-22FF;
 }
 @font-face {
   font-family: 'Gilroy';
   src: url('../assets/fonts/Gilroy-Medium.woff2') format('woff2');
   font-weight: 500; font-style: normal; font-display: swap;
+  unicode-range: U+0000-03FF, U+2000-20BF, U+2116-21FF, U+2200-22FF;
 }
 @font-face {
   font-family: 'Gilroy';
   src: url('../assets/fonts/Gilroy-Semibold.woff2') format('woff2');
   font-weight: 600; font-style: normal; font-display: swap;
+  unicode-range: U+0000-03FF, U+2000-20BF, U+2116-21FF, U+2200-22FF;
 }
 @font-face {
   font-family: 'Gilroy';
   src: url('../assets/fonts/Gilroy-Bold.woff2') format('woff2');
   font-weight: 700; font-style: normal; font-display: swap;
+  unicode-range: U+0000-03FF, U+2000-20BF, U+2116-21FF, U+2200-22FF;
 }
 @font-face {
   font-family: 'Gilroy';
   src: url('../assets/fonts/Gilroy-BoldItalic.woff2') format('woff2');
   font-weight: 700; font-style: italic; font-display: swap;
+  unicode-range: U+0000-03FF, U+2000-20BF, U+2116-21FF, U+2200-22FF;
+}
+
+/* кириллица */
+@font-face {
+  font-family: 'Gilroy';
+  src: url('../assets/fonts/Gilroy-Regular-cyr.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1;
+}
+@font-face {
+  font-family: 'Gilroy';
+  src: url('../assets/fonts/Gilroy-Medium-cyr.woff2') format('woff2');
+  font-weight: 500; font-style: normal; font-display: swap;
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1;
+}
+@font-face {
+  font-family: 'Gilroy';
+  src: url('../assets/fonts/Gilroy-Semibold-cyr.woff2') format('woff2');
+  font-weight: 600; font-style: normal; font-display: swap;
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1;
+}
+@font-face {
+  font-family: 'Gilroy';
+  src: url('../assets/fonts/Gilroy-Bold-cyr.woff2') format('woff2');
+  font-weight: 700; font-style: normal; font-display: swap;
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1;
+}
+@font-face {
+  font-family: 'Gilroy';
+  src: url('../assets/fonts/Gilroy-BoldItalic-cyr.woff2') format('woff2');
+  font-weight: 700; font-style: italic; font-display: swap;
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1;
 }
 
 @font-face {
   font-family: 'Gotham Pro';
   src: url('../assets/fonts/GothamPro-Regular.woff2') format('woff2');
   font-weight: 400; font-style: normal; font-display: swap;
+  unicode-range: U+0000-03FF, U+2000-20BF, U+2116-21FF, U+2200-22FF;
+}
+@font-face {
+  font-family: 'Gotham Pro';
+  src: url('../assets/fonts/GothamPro-Regular-cyr.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1;
 }
 
 @font-face {

@@ -224,6 +224,24 @@ body::before {
 .nav a.is-current::after { transform: scaleX(1); }
 .nav a.is-current { opacity: 1; }
 
+/* переключатель языка в правой навигации — «EN | RU» из макета */
+.lang { display: inline-flex; align-items: center; gap: 13px; }
+.lang a { transition: color 0.25s var(--ease); }
+.lang a.is-current {
+  font-weight: 600;
+  color: var(--ink);
+  pointer-events: none;
+}
+.lang a.is-current::after { display: none; }
+.lang a + a::before {
+  content: '|';
+  position: absolute;
+  left: -8px;
+  font-weight: 400;
+  color: rgba(24, 35, 46, 0.4);
+  pointer-events: none;
+}
+
 .avatar {
   width: 36px;
   height: 36px;
@@ -956,6 +974,8 @@ body::before {
 }
 
 @media (max-width: 759px) {
-  .nav--right { display: none; }
+  /* контакты прячем, но переключатель языка должен остаться доступен */
+  .nav--right { flex: 0 0 auto; gap: 0; }
+  .nav--right > a { display: none; }
   .nav__cap { display: none; }
 }
