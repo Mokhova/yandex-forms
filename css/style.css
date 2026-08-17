@@ -974,8 +974,10 @@ body::before {
 }
 
 /* ===========================================================================
-   Мобильная версия — по макету «iPhone 13 & 14 - 1» (709:1254).
-   Ширина макета 390, поэтому все числа ниже сняты с него один в один.
+   Мобильная версия страницы кейса — по макету «iPhone 13 & 14 - 1» (709:1254).
+   Кадр макета 390 шириной, поэтому все числа сняты с него один в один.
+   Блоки перебраны по порядку: герой, about, problem, solution, result,
+   разделитель главы, коллаж, шаги, дизайн-фичи, витрины.
    =========================================================================== */
 @media (max-width: 759px) {
   :root { --gutter: 16px; }
@@ -996,51 +998,70 @@ body::before {
   .page { padding-top: 56px; }
   .footer { padding-bottom: 104px; }        /* место под плавающую таблетку */
 
-  /* ---------- типографика ---------------------------------------------- */
+  /* ---------- общая типографика секций ---------------------------------- */
   .eyebrow {
     font-family: var(--font-alt);
     font-size: 12px;
     line-height: 14px;
     color: rgba(24, 35, 46, 0.4);
+    text-align: center;
   }
-  .h2 { font-size: 28px; line-height: 28px; text-align: center; color: var(--ink); }
+  .h2 { font-size: 28px; line-height: 26px; text-align: center; color: var(--ink); }
   .h3 { font-size: 20px; line-height: 26px; }
   .body-16, .body-18 { font-size: 16px; line-height: 18px; }
-  .label { font-size: 12px; line-height: 26px; }
+  .label {
+    font-family: var(--font-alt);
+    font-size: 12px;
+    line-height: 26px;
+    color: rgba(24, 35, 46, 0.4);
+  }
   .label--lg { font-size: 16px; line-height: 20px; }
-  .about__title { font-size: 28px; line-height: 28px; text-align: center; }
 
   /* переносы, расставленные под 1280, на узком экране только мешают */
-  .h2 br, .about__title br, .body-16 br, .h3 br,
+  .h2 br, .about__title br, .body-16 br, .body-18 br, .h3 br,
   .result-item .body-16 br, .metric .h3 br, .note .h3 br { display: none; }
 
-  /* ---------- герой ------------------------------------------------------ */
+  .section__head { padding: 0 12px; gap: 8px; align-items: center; text-align: center; }
+
+  /* ---------- 1. герой (709:1256) --------------------------------------- */
   .hero { padding: 4px 4px 0; }
   .hero__card { border-radius: 16px; padding: 8px 0 0; }
   .hero__inner { padding: 0; gap: 72px; }
-  .hero__meta { font-family: var(--font-meta); font-size: 14px; line-height: 16px; padding: 0 16px; }
+  .hero__meta {
+    font-family: var(--font-meta);
+    font-size: 14px;
+    line-height: 16px;
+    padding: 0 16px;
+  }
   .hero__stack { gap: 16px; }
   .hero__title { font-size: 48px; line-height: 48px; }
-  .glass { padding: 1px 1px 1px; border-radius: 16px; background: none; }
+  /* стеклянная подложка на мобильном не нужна: скриншот прижат к краям карточки */
+  .glass { padding: 0 1px 1px; border-radius: 16px; background: none; box-shadow: none; }
   .hero__shot { width: 100%; height: auto; border-radius: 16px; }
   .hero__shot img { height: auto; }
 
-  /* ---------- секции ----------------------------------------------------- */
-  .section--about { padding: 28px 12px 100px; }
-  .section--problem,
-  .section--solution,
-  .section--outcome,
-  .section--actions,
-  .section--design { padding: 28px 0 100px; gap: 24px; }
-  .section--result { padding: 0 0 100px; }
-  .section__head { padding: 0 12px; gap: 8px; align-items: center; text-align: center; }
+  /* ---------- 2. about (709:1268) --------------------------------------- */
+  .section--about { padding: 64px 20px 100px; gap: 12px; align-items: center; }
+  /* здесь надзаголовок крупнее, чем в остальных секциях — так в макете */
+  .section--about .eyebrow {
+    font-family: var(--font);
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 16px;
+    color: rgba(24, 35, 46, 0.3);
+  }
+  .about__title { font-size: 28px; line-height: 26px; text-align: center; }
 
-  /* ---------- карточки --------------------------------------------------- */
+  /* ---------- 3. problem (737:1635) ------------------------------------- */
+  .section--problem { padding: 28px 0 100px; gap: 24px; }
+  .section--problem .h2 { line-height: 28px; }
+
   .grid { gap: 8px; }
   .grid__row { flex-direction: column; gap: 8px; padding: 0 var(--gutter); }
   .grid__row > .card,
   .grid__row > .card--wide,
   .grid__row > .card--narrow { flex: 1 1 auto; width: 100%; }
+
   .card, .card--pt28, .card--pt40, .grid__row > .card--wide {
     padding: 20px 28px 40px;
     border-radius: 24px;
@@ -1048,29 +1069,76 @@ body::before {
     background: rgba(255, 255, 255, 0.7);
   }
   .card .h3 { font-size: 20px; line-height: 26px; }
-  /* широкие скриншоты идут во всю ширину экрана, как в макете */
-  .card--shot { padding: 4px; border-radius: 16px; background: #f9f9f9; }
-  .shot--theme, .shot--editor { width: 100%; height: auto; border-radius: 16px; }
-  .shot--theme img, .shot--editor img { height: auto; }
+  .card .dim { color: rgba(24, 35, 46, 0.4); }
+
+  /* карточка со скриншотом уходит наверх и растягивается во всю ширину кадра */
+  .grid__row > .card:has(> .shot--theme),
+  .grid__row > .card:has(> .shot--editor) {
+    order: -1;
+    margin: 0 -12px;
+    padding: 0;
+    border-radius: 16px;
+    background: #f9f9f9;
+    overflow: hidden;
+  }
+  .grid__row > .card:has(> .shot--theme) > .label,
+  .grid__row > .card:has(> .shot--editor) > .label { display: none; }
+  .shot--theme, .shot--editor {
+    width: 100%;
+    height: 240px;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .shot--theme img, .shot--editor img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: left top;
+  }
   .stack-list .rule { width: 100%; }
 
-  /* ---------- versus ----------------------------------------------------- */
-  .versus { flex-direction: column; position: relative; padding: 0 var(--gutter); }
-  .versus .card { width: 100%; height: auto; padding: 24px 28px 32px; gap: 16px; }
-  .versus .card--dark { text-align: left; align-items: flex-start; order: 0; }
-  .versus .card:not(.card--dark) { order: 2; }
-  .versus__mark {
-    position: absolute;
-    left: 0; right: 0; top: 0; bottom: 0;
-    display: flex;
+  /* ---------- 4. solution / versus (710:1298) --------------------------- */
+  .section--solution { padding: 28px 0 100px; gap: 24px; }
+  .versus { flex-direction: column; position: relative; gap: 8px; padding: 0 var(--gutter); }
+  .versus .card {
+    width: 100%;
+    height: auto;
+    padding: 28px 28px 40px;
+    border-radius: 24px;
+    gap: 8px;
+    text-align: center;
+    align-items: center;
+  }
+  .versus .card--dark {
+    order: 0;
+    height: 180px;
+    background: var(--ink);      /* общее правило .card выше перебивало фон */
+    text-align: center;
     align-items: center;
     justify-content: center;
+  }
+  .versus .card:not(.card--dark) { order: 2; }
+  .versus .card .h3 { font-size: 20px; line-height: 20px; }
+  .versus .card .body-18 { font-size: 16px; line-height: 16px; }
+  /* «VS» сидит ровно в зазоре между карточками, а не по центру всего блока */
+  .versus__mark {
+    position: absolute;
+    display: block;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    top: 184px;                  /* ровно в зазоре под тёмной карточкой */
+    transform: translate(-50%, -50%);
+    font-size: 36px;
+    line-height: 36px;
+    z-index: 3;
     pointer-events: none;
   }
 
-  /* ---------- метрики: в макете остаются сеткой два на два --------------- */
+  /* ---------- 5. result / outcome (737:1593) ---------------------------- */
+  .section--outcome { padding: 28px 0 100px; gap: 24px; }
   .outcome { gap: 8px; }
-  .outcome__row { flex-direction: row; gap: 8px; padding: 0 12px; align-items: stretch; }
+  .outcome__row { flex-direction: row; flex-wrap: wrap; gap: 8px; padding: 0 12px; align-items: stretch; }
   .metric {
     flex: 1 1 0;
     width: auto;
@@ -1084,14 +1152,8 @@ body::before {
   }
   .metric .h3 { font-size: 16px; line-height: 16px; }
   .metric__value { font-size: 40px; line-height: 40px; letter-spacing: 5px; }
-  .note {
-    width: auto;
-    height: auto;
-    padding: 24px;
-    border-radius: 24px;
-  }
+  .note { width: auto; height: auto; padding: 24px; border-radius: 24px; }
   /* заметок бывает три, поэтому ряд переносится по две в строку */
-  .outcome__row { flex-wrap: wrap; }
   .outcome__row .note {
     flex: 1 1 calc(50% - 4px);
     min-width: calc(50% - 4px);
@@ -1100,12 +1162,12 @@ body::before {
   }
   .note .h3 { font-size: 16px; line-height: 16px; }
 
-  /* ---------- разделители глав ------------------------------------------- */
+  /* ---------- 6. разделитель главы (741:1693) --------------------------- */
   .chapter { height: auto; padding: 40px var(--gutter) 16px; overflow: visible; }
   .chapter__title { font-size: 48px; line-height: 48px; letter-spacing: 0; text-indent: 0; }
   .chapter__blob { width: 160%; margin-left: -80%; height: 240px; top: 20px; filter: blur(70px); }
 
-  /* ---------- коллажи ----------------------------------------------------- */
+  /* ---------- 7. коллаж (741:1741) -------------------------------------- */
   /* абсолютная раскладка разбирается: скриншоты уходят наверх во всю ширину,
      текстовые карточки собираются в горизонтальную ленту — так в макете */
   .collage {
@@ -1126,11 +1188,13 @@ body::before {
     margin: 0 4px;
     padding: 4px;
     border-radius: 16px;
+    background: #f9f9f9;
   }
   .collage .card--shot > .label {
     position: static !important;
     left: auto !important; top: auto !important;
     margin: 8px 0 6px 10px;
+    text-align: left;
   }
   .collage .shot {
     position: static !important;
@@ -1166,7 +1230,8 @@ body::before {
 
   .loose { display: none; }
 
-  /* ---------- белая карта с шагами --------------------------------------- */
+  /* ---------- 8. шаги в белой карте (741:1812) -------------------------- */
+  .section--actions { padding: 28px var(--gutter) 100px; gap: 24px; }
   .paper-card { border-radius: 44px; padding: 44px 0; gap: 28px; }
   .step { padding: 0 28px; gap: 8px; }
   .step .h3 { font-size: 20px; line-height: 20px; }
@@ -1175,8 +1240,69 @@ body::before {
   .bullets { gap: 16px; padding-left: 1px; }
   .bullets li { gap: 8px; font-size: 16px; line-height: 18px; }
 
-  /* ---------- витрины ------------------------------------------------------ */
-  .showcase { padding: 28px var(--gutter) 100px !important; gap: 28px !important; }
+  /* ---------- 9. дизайн-фичи (741:2131) --------------------------------- */
+  /* на десктопе это абсолютные коллажи, на мобильном — стопка карточек,
+     где подпись стоит над картинкой */
+  .section--design { padding: 28px 4px 100px; gap: 8px; }
+  .section--design > .h2 { font-size: 28px; line-height: 26px; margin-bottom: 20px; }
+
+  .feature {
+    position: relative;
+    height: auto !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    padding: 36px 12px 48px;
+    border-radius: 32px;
+    background: #f9f9f9;
+    overflow: clip;
+  }
+  /* подпись встаёт над картинкой и выравнивается по центру.
+     !important здесь обязателен: блок на 1023 прибивает левое выравнивание */
+  .feature__copy {
+    position: static !important;
+    left: auto !important; top: auto !important; right: auto !important;
+    width: 100% !important;
+    order: -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center !important;
+    gap: 8px;
+    padding: 0 16px;
+    text-align: center;
+    z-index: 2;
+  }
+  .feature__copy .h2,
+  .feature__copy .h3,
+  .feature__copy .body-16,
+  .feature__copy .body-16 p { text-align: center !important; width: 100%; }
+  .feature__copy .h2 {
+    font-size: 28px !important;
+    line-height: 26px !important;
+    color: rgba(24, 35, 46, 0.8);
+  }
+  .feature__copy .body-16 { font-size: 16px !important; line-height: 18px !important; }
+  /* саму картинку не трогаем: её размер и масштаб считает fitStages() в main.js,
+     иначе многослойные коллажи разъезжаются */
+  .feature__art { order: 1; margin: 0 auto; }
+
+  /* ---------- 10. витрины (747:2479) ------------------------------------ */
+  .showcase { padding: 0 4px 100px !important; gap: 0 !important; }
+  .showcase__item { padding-top: 28px; gap: 8px; align-items: center; }
+  .showcase__blob { display: none; }
+  .showcase__glass { padding: 8px; border-radius: 24px; }
+  .showcase__shot {
+    width: 100%;
+    height: auto !important;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .showcase__shot img { width: 100%; height: auto; }
+
+  /* ---------- 11. результат главы --------------------------------------- */
+  .section--result { padding: 28px var(--gutter) 100px; gap: 16px; }
 }
 
 /* обёртка ленты коллажа: на десктопе её как будто нет, карточки остаются
