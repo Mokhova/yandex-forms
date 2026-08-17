@@ -322,8 +322,30 @@
     fitTimer = setTimeout(fitStages, 120);
   }
 
+  /* --------------------------------------------------------------------
+     Коллажи на мобильном: текстовые карточки собираются в горизонтальную
+     ленту, как в макете. Обёртка живёт только в разметке — на десктопе она
+     display:contents, поэтому абсолютная раскладка карточек не ломается.
+     -------------------------------------------------------------------- */
+  function initCollageRows() {
+    var collages = [].slice.call(document.querySelectorAll('.collage'));
+    for (var i = 0; i < collages.length; i++) {
+      var box = collages[i];
+      if (box.querySelector('.collage__row')) continue;
+      var cards = [].slice.call(box.children).filter(function (el) {
+        return el.classList.contains('card') && !el.classList.contains('card--shot');
+      });
+      if (cards.length < 2) continue;
+      var row = document.createElement('div');
+      row.className = 'collage__row';
+      box.insertBefore(row, cards[0]);
+      for (var c = 0; c < cards.length; c++) row.appendChild(cards[c]);
+    }
+  }
+
   function boot() {
     guardImages();
+    initCollageRows();
     initAvatarReveal();
     initReveal();
     initCounters();
