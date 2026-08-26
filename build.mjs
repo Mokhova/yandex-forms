@@ -9,7 +9,7 @@ import { writeFileSync, mkdirSync } from 'node:fs';
 const LINKEDIN = 'https://www.linkedin.com/in/екатерина-мохова-a036a053/';
 const RESUME   = 'https://disk.yandex.ru/i/5MKnDbh3JXLgug';
 const MAIL     = 'mailto:katecherno@proton.me';
-const ORIGIN   = 'https://mokhova.github.io/portfolio-v2';
+const ORIGIN   = 'https://mokhova.github.io/yandex-forms';
 
 /* ===========================================================================
    EN — тексты сняты с макета (Figma 777:1731)
