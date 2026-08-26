@@ -1,6 +1,7 @@
 /* ===========================================================================
-   Yandex.Forms Redesign — motion layer
-   Vanilla JS, no dependencies. Everything degrades gracefully.
+   portfolio v2 — слой движения
+   Ванильный JS без зависимостей, всё деградирует мягко.
+   Прогресс-бара нет намеренно.
    =========================================================================== */
 (function () {
   'use strict';
@@ -72,6 +73,8 @@
       var target = parseFloat(el.getAttribute('data-count'));
       var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
       var suffix = el.getAttribute('data-suffix') || '';
+      var prefix = el.getAttribute('data-prefix') || '';
+      var sep = el.getAttribute('data-sep') || '.';
       var sign = target < 0 ? '-' : '';
       var abs = Math.abs(target);
       var dur = 1400;
@@ -81,7 +84,8 @@
         if (t0 === null) t0 = t;
         var p = Math.min((t - t0) / dur, 1);
         var eased = 1 - Math.pow(1 - p, 4);
-        el.textContent = sign + (abs * eased).toFixed(decimals) + suffix;
+        var num = (abs * eased).toFixed(decimals).replace('.', sep);
+        el.textContent = prefix + sign + num + suffix;
         if (p < 1) requestAnimationFrame(frame);
       }
       requestAnimationFrame(frame);
@@ -104,10 +108,9 @@
   }
 
   /* -----------------------------------------------------------------------
-     3. Scroll-driven layer: progress, header, parallax, sticky hero
+     3. Скролл: шапка, параллакс, «живой» герой, активная глава
      --------------------------------------------------------------------- */
   function initScroll() {
-    var progress = document.getElementById('progress');
     var header = document.getElementById('header');
     var heroShot = document.querySelector('.hero__shot');
     var heroTitle = document.querySelector('[data-hero-title]');
@@ -136,9 +139,6 @@
       ticking = false;
       var y = window.pageYOffset;
       var vh = window.innerHeight;
-      var doc = document.documentElement.scrollHeight - vh;
-
-      if (progress) progress.style.transform = 'scaleX(' + (doc > 0 ? y / doc : 0) + ')';
 
       // header: hide going down, show going up; always visible near the top
       if (header) {
@@ -343,10 +343,119 @@
     }
   }
 
+  /* -----------------------------------------------------------------------
+     7. Заголовки глав проявляются «протяжкой» слева направо
+     ---------------------------------------------------------------------
+     Текст не режем на буквы: разрядка в макете точная, а inline-block-буквы
+     ломают кернинг и слово становится шире. Вместо этого двигаем маску.
+     --------------------------------------------------------------------- */
+  function initChapterTitles() {
+    var titles = [].slice.call(document.querySelectorAll('.chapter__title'));
+    if (!titles.length) return;
+
+    if (reduced || !('IntersectionObserver' in window)) {
+      titles.forEach(function (el) { el.classList.add('is-in'); });
+      return;
+    }
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.35 });
+    titles.forEach(function (el) { io.observe(el); });
+  }
+
+  /* -----------------------------------------------------------------------
+     8. Скриншоты старого интерфейса — карусель со свайпом (767:1695)
+     ---------------------------------------------------------------------
+     На мобильном лента листается пальцем, под ней — точки, как в макете.
+     На десктопе обёртка display:contents, поэтому абсолютная раскладка
+     коллажа не ломается, а точки скрыты.
+     --------------------------------------------------------------------- */
+  function initShotSwipe() {
+    // коллажи глав: ленту собираем из карточек со скриншотами
+    [].forEach.call(document.querySelectorAll('.collage'), function (box) {
+      if (box.querySelector('.collage__shots')) return;
+      var shots = [].slice.call(box.children).filter(function (el) {
+        return el.classList.contains('card--shot');
+      });
+      if (shots.length < 2) return;
+
+      var track = document.createElement('div');
+      track.className = 'collage__shots';
+      box.insertBefore(track, shots[0]);
+      shots.forEach(function (s) { track.appendChild(s); });
+      attachDots(track, shots, track);
+    });
+
+    // секция «проблема»: лента уже стоит в разметке
+    [].forEach.call(document.querySelectorAll('.shot-gallery'), function (track) {
+      var slides = [].slice.call(track.children);
+      if (slides.length < 2) return;
+      attachDots(track, slides, track.closest('.card') || track);
+    });
+  }
+
+  function attachDots(track, shots, anchor) {
+    {
+      var dots = document.createElement('div');
+      dots.className = 'collage__dots';
+      dots.setAttribute('role', 'tablist');
+      shots.forEach(function (shot, i) {
+        var dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'collage__dot' + (i ? '' : ' is-current');
+        dot.setAttribute('role', 'tab');
+        dot.setAttribute('aria-label', String(i + 1));
+        dot.setAttribute('aria-selected', i ? 'false' : 'true');
+        dot.addEventListener('click', function () {
+          track.scrollTo({
+            left: shot.offsetLeft - track.offsetLeft,
+            behavior: reduced ? 'auto' : 'smooth'
+          });
+        });
+        dots.appendChild(dot);
+      });
+      anchor.insertAdjacentElement('afterend', dots);
+
+      var ticking = false;
+      function sync() {
+        ticking = false;
+        var mid = track.scrollLeft + track.clientWidth / 2;
+        var best = 0;
+        var min = Infinity;
+        shots.forEach(function (shot, i) {
+          var c = shot.offsetLeft - track.offsetLeft + shot.offsetWidth / 2;
+          var d = Math.abs(c - mid);
+          if (d < min) { min = d; best = i; }
+        });
+        [].forEach.call(dots.children, function (dot, i) {
+          dot.classList.toggle('is-current', i === best);
+          dot.setAttribute('aria-selected', i === best ? 'true' : 'false');
+        });
+      }
+      track.addEventListener('scroll', function () {
+        if (ticking) return;
+        ticking = true;
+        // в фоновой вкладке rAF не тикает — тогда добираем таймером
+        if (document.hidden) setTimeout(sync, 60);
+        else requestAnimationFrame(sync);
+      }, { passive: true });
+      window.addEventListener('resize', sync);
+      sync();
+    }
+  }
+
   function boot() {
     guardImages();
     initCollageRows();
+    initShotSwipe();
     initAvatarReveal();
+    initChapterTitles();
     initReveal();
     initCounters();
     fitStages();

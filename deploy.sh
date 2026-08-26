@@ -1,32 +1,14 @@
 #!/usr/bin/env bash
-# Публикация сайта на GitHub Pages.
-#
-#   1. Создай пустой репозиторий на github.com (без README, без .gitignore).
-#   2. Запусти:  ./deploy.sh https://github.com/<username>/<repo>.git
-#   3. В репозитории: Settings → Pages → Source: Deploy from a branch
-#      → Branch: main / (root) → Save.
-#
+# Публикация на GitHub Pages.
+#   ./deploy.sh https://github.com/mokhova/<repo>.git
+# После первого пуша: Settings → Pages → Deploy from a branch → main / (root).
 set -euo pipefail
-
 REMOTE="${1:-}"
-if [ -z "$REMOTE" ]; then
-  echo "Использование: ./deploy.sh https://github.com/<username>/<repo>.git"
-  exit 1
-fi
-
+[ -z "$REMOTE" ] && { echo "Использование: ./deploy.sh https://github.com/mokhova/<repo>.git"; exit 1; }
 cd "$(dirname "$0")"
-
 git add -A
-git commit -m "Yandex.Forms case study" || echo "нечего коммитить, идём дальше"
+git diff --cached --quiet || git commit -m "Обновление сайта-кейса"
 git branch -M main
-
-if git remote | grep -q '^origin$'; then
-  git remote set-url origin "$REMOTE"
-else
-  git remote add origin "$REMOTE"
-fi
-
+git remote | grep -q '^origin$' && git remote set-url origin "$REMOTE" || git remote add origin "$REMOTE"
 git push -u origin main
-
-echo
-echo "Готово. Осталось включить Pages: Settings → Pages → main / (root)."
+echo "Готово. Проверь Settings → Pages: main / (root)."
