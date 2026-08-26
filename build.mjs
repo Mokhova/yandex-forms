@@ -326,11 +326,11 @@ const ru = {
   ch1f4t: 'Группы всегда видно',
   ch1f4b: '<p>В табличном виде — отдельным столбцом, <br>в сгруппированном — заголовком</p>',
 
-  capHome: '(главная, она же список) и (список с группировкой)',
+  capHome: '(главная) и (главная с группировкой)',
   capEditor: '(новый конструктор) и (несколько страниц)',
-  capStyles: '(новый редактор тем)',
-  ch1sh1: '(главная, она же список)', ch1sh1Alt: 'Новый список форм',
-  ch1sh2: '(список с группировкой)',  ch1sh2Alt: 'Список с группировкой',
+  capStyles: '(список тем) и (создание своей темы)',
+  ch1sh1: '(главная)', ch1sh1Alt: 'Новый список форм',
+  ch1sh2: '(главная с группировкой)',  ch1sh2Alt: 'Список с группировкой',
 
   ch1r1t: 'Гипотеза подтвердилась',
   ch1r1b: 'До релиза проводили UX-тестирование прототипов, получили подтверждение <br>и положительные отзывы. Люди быстро справлялись с задачами, сразу находили нужные элементы',
@@ -426,8 +426,8 @@ const ru = {
   ch3f7t: 'Спека внешнего вида формы',
   ch3f7b: '<p>Это подробный гайд, как ведут себя все элементы при разных параметрах кастомизации, как выглядят крайние случаи. И даже решила несколько старых проблем в отображении элементов формы. Например, как отображать некоторые контролы без обводки: добавила возможность убирать паддинги внутри контрола. Описала разработчикам, что в этом случае обычный контрол меняется контролом без обводки из текущей библиотеки!</p>',
 
-  ch3sh1: '(новый редактор тем)', ch3sh1Alt: 'Новый редактор тем',
-  ch3sh2: '(новый редактор тем)', ch3sh2Alt: 'Новый редактор тем, полный вид',
+  ch3sh1: '(список тем)', ch3sh1Alt: 'Список тем',
+  ch3sh2: '(создание своей темы)', ch3sh2Alt: 'Создание своей темы',
 
   ch3r1t: 'Темы популярнее',
   ch3r1b: 'После релиза стали больше создавать свои темы и редактировать уже созданные. <br>И чаще выбирают новые пресеты тем',
@@ -1055,11 +1055,45 @@ ${resultItem(t.ch3r1t, t.ch3r1b)}${resultRule}${resultItem(t.ch3r2t, t.ch3r2b)}
 `;
 }
 
+/* ===========================================================================
+   Неразрывные пробелы после предлогов
+   ---------------------------------------------------------------------------
+   Предлог склеивается со следующим словом, чтобы не висеть в конце строки.
+   Обрабатывается только текст между тегами: содержимое самих тегов
+   (атрибуты, style, src) не трогаем.
+   =========================================================================== */
+const PREP_RU = `безо без близ вблизи вглубь вдоль взамен включая вместо вне внутри внутрь
+  возле вокруг вопреки впереди вроде вследствие во в для до за изо из-за из-под из
+  ко кроме кругом меж между мимо надо над накануне наперекор напротив насчёт на
+  обо об около ото от передо перед подо подле под позади помимо поперёк посреди
+  посредством после по при про против путём ради сверх сверху свыше сзади сквозь
+  согласно спустя среди со с у через чрез о к`.trim().split(/\s+/);
+
+const PREP_EN = `about above across after against along among around as at before behind below
+  beneath beside besides between beyond by despite during except for from inside into
+  in near of off onto on outside out over past per since than throughout through
+  towards toward to underneath under until upon up via within without with`.trim().split(/\s+/);
+
+function nbspify(html, words) {
+  // длинные предлоги проверяем первыми, иначе «из» съест «из-за»
+  const alts = words.slice().sort((a, b) => b.length - a.length).join('|');
+  const re = new RegExp(
+    '(^|[^\\p{L}\\p{N}-])(' + alts + ')([ \\t]+)(?=[\\p{L}\\p{N}«"„(])',
+    'giu'
+  );
+  return html
+    .split(/(<[^>]*>)/)
+    .map((chunk, i) => (i % 2 ? chunk : chunk.replace(re, (m, pre, w) => pre + w + ' ')))
+    .join('');
+}
+
 /* --------------------------------------------------------------------------- */
 const langEN = '<a href="#" class="is-current" aria-current="true" hreflang="en">EN</a><a href="ru/" hreflang="ru">RU</a>';
 const langRU = '<a href="../" hreflang="en">EN</a><a href="#" class="is-current" aria-current="true" hreflang="ru">RU</a>';
 
 mkdirSync(new URL('./ru/', import.meta.url), { recursive: true });
-writeFileSync(new URL('./index.html', import.meta.url), render(en, { A: 'assets/', langNav: langEN }));
-writeFileSync(new URL('./ru/index.html', import.meta.url), render(ru, { A: '../assets/', langNav: langRU }));
+writeFileSync(new URL('./index.html', import.meta.url),
+  nbspify(render(en, { A: 'assets/', langNav: langEN }), PREP_EN));
+writeFileSync(new URL('./ru/index.html', import.meta.url),
+  nbspify(render(ru, { A: '../assets/', langNav: langRU }), PREP_RU));
 console.log('built: index.html, ru/index.html');
