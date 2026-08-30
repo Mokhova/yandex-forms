@@ -318,8 +318,12 @@ body::before {
 
 .hero__title {
   font-weight: 700;
-  font-size: 84px;
-  line-height: 74px;
+  font-size: 100px;
+  line-height: 88px;
+  /* краска у background-clip:text живёт внутри padding-box, поэтому выносные
+     элементы букв и боковые свесы надо накрыть полем, а поле снять margin'ом */
+  padding: 0.14em 0.08em;
+  margin: -0.14em -0.08em;
   text-align: center;
   text-transform: uppercase;
   background-image: linear-gradient(180deg, #fff 0%, rgba(255, 255, 255, 0.4) 100%);
@@ -378,6 +382,8 @@ body::before {
   font-weight: 600;
   font-size: 36px;
   line-height: 36px;
+  padding: 0.14em 0.08em;
+  margin: -0.14em -0.08em;
   text-align: center;
   /* градиент снят пипеткой с макета: почти вертикальный, с лёгким наклоном */
   background-image: linear-gradient(172deg, #354650 0%, var(--orange) 100%);
@@ -457,10 +463,10 @@ body::before {
   width: 100%;
 }
 .versus .card {
-  width: 400px;
-  height: 298px;
+  width: 420px;
+  min-height: 298px;
   flex: none;
-  padding: 28px 40px 40px;
+  padding: 40px;
   justify-content: space-between;
   gap: 0;
 }
@@ -496,7 +502,7 @@ body::before {
 
 .metric {
   width: 365px;
-  height: 320px;
+  min-height: 320px;
   flex: none;
   border-radius: var(--r-24);
   padding: 40px;
@@ -507,15 +513,15 @@ body::before {
 }
 .metric__value {
   font-weight: 500;
-  font-size: 84px;
-  line-height: 70px;
-  letter-spacing: 5px;
+  font-size: 60px;
+  line-height: 60px;
+  letter-spacing: 0;
   color: rgba(24, 35, 46, 0.8);
 }
 
 .note {
   flex: 1 0 0;
-  height: 200px;
+  min-height: 200px;
   border-radius: var(--r-24);
   padding: 40px;
   background: linear-gradient(136.33deg, var(--grad-a) 44.65%, var(--grad-c) 98.83%);
@@ -553,6 +559,8 @@ body::before {
   font-weight: 700;
   font-size: 84px;
   line-height: 70px;
+  padding: 0.14em 0.08em;
+  margin: -0.14em -0.08em;
   letter-spacing: 40px;
   text-indent: 40px;
   text-transform: uppercase;
@@ -711,11 +719,19 @@ body::before {
   width: 100%;
   padding: 24px;
   border-radius: var(--r-32);
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
+  background: linear-gradient(148deg,
+    rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.22) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  box-shadow:
+    0 24px 60px rgba(24, 35, 46, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
-.showcase__glass--bright { background: rgba(255, 255, 255, 0.1); }
+.showcase__glass--bright {
+  background: linear-gradient(148deg,
+    rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.35) 100%);
+}
 .showcase__shot {
   width: 1184px;
   border-radius: var(--r-16);
@@ -882,7 +898,7 @@ body::before {
 
   /* ---------- versus ---------- */
   .versus { flex-direction: column; position: relative; }
-  .versus .card { width: 100%; height: auto; padding: 24px; gap: 16px; }
+  .versus .card { width: 100%; height: auto; min-height: 0; padding: 24px; gap: 16px; }
   .versus .card--dark { text-align: left; align-items: flex-start; order: 0; }
   .versus .card:not(.card--dark) { order: 2; }
   .versus__mark { pointer-events: none; }
@@ -891,7 +907,7 @@ body::before {
   .outcome__row { flex-direction: column; }
   .metric { width: 100%; height: auto; min-height: 200px; padding: 24px; gap: 32px; }
   .metric__value { font-size: clamp(44px, 13vw, 84px); line-height: 1; letter-spacing: 2px; }
-  .note { width: 100%; height: auto; padding: 24px; }
+  .note { width: 100%; height: auto; min-height: 0; padding: 24px; }
   .outcome__row .note {
     flex: none;              /* базовый flex:1 0 0 в колонке съедает height */
     height: 100px;
@@ -1172,6 +1188,7 @@ body::before {
   .versus .card {
     width: 100%;
     height: auto;
+    min-height: 0;
     padding: 28px 28px 40px;
     border-radius: 24px;
     gap: 8px;
@@ -1222,6 +1239,7 @@ body::before {
   .note {
     width: auto;
     height: auto;
+    min-height: 0;
     padding: 24px;
     border-radius: 24px;
     background-image: linear-gradient(128.12deg,
