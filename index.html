@@ -49,7 +49,7 @@
 <main class="page" id="top">
 
   <!-- ================= HERO ================= -->
-  <section class="hero">
+  <section class="hero" id="intro">
     <div class="hero__card">
       <div class="hero__inner">
         <div class="hero__meta">
@@ -655,12 +655,27 @@
 
 <nav class="dock" aria-label="Contents:">
   <span class="dock__sections">
+    <a href="#intro" data-nav="intro">intro</a>
     <a href="#homepage" data-nav="homepage">home</a>
     <a href="#editor" data-nav="editor">editor</a>
     <a href="#styles" data-nav="styles">design</a>
   </span>
-  <a class="dock__cta" href="mailto:katecherno@proton.me">email</a>
+  <button class="dock__cta" type="button" data-sheet="contacts">contact</button>
 </nav>
+
+
+<div class="sheet" id="contacts" hidden>
+  <button class="sheet__scrim" type="button" data-sheet-close aria-label="Close"></button>
+  <div class="sheet__panel" role="dialog" aria-modal="true" aria-labelledby="contacts-title">
+    <span class="sheet__grip" aria-hidden="true"></span>
+    <p class="sheet__title" id="contacts-title">Contacts</p>
+    <ul class="sheet__list">
+      <li><a href="mailto:katecherno@proton.me">Email<span>katecherno@proton.me</span></a></li>
+      <li><a href="https://www.linkedin.com/in/екатерина-мохова-a036a053/" target="_blank" rel="noopener">LinkedIn<span>Kate Mokhova</span></a></li>
+      <li><a href="https://disk.yandex.ru/i/5MKnDbh3JXLgug" target="_blank" rel="noopener">Resume<span>PDF</span></a></li>
+    </ul>
+  </div>
+</div>
 
 <script src="js/main.js?v=8"></script>
 </body>
