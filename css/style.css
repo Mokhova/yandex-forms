@@ -75,7 +75,10 @@
 *::before,
 *::after { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; overflow-x: clip; }
+/* без overflow-x на html и body: в iOS Safari это сбивает position: fixed —
+   шапка и шторка отъезжают от края экрана. всё, что вылезает по горизонтали,
+   режется теперь на своих блоках (.hero, .case, .chapter) */
+html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
@@ -85,7 +88,6 @@ body {
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: clip;
 }
 
 p, h1, h2, h3, h4, figure { margin: 0; }
@@ -567,9 +569,12 @@ body::before {
 /* =========================================================================
    CHAPTER DIVIDER
    ========================================================================= */
-/* блоб намеренно выходит за границы блока — в макете фрейм не обрезает контент */
+/* блоб намеренно выходит за границы блока по вертикали — в макете фрейм не
+   обрезает контент; по горизонтали режем, иначе у страницы появляется прокрутка */
 .chapter {
   position: relative;
+  overflow-x: clip;
+  overflow-y: visible;
   height: 182px;
   display: flex;
   align-items: center;
@@ -731,8 +736,10 @@ body::before {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* блоб намеренно выходит за границы секции — как во фрейме макета */
-  overflow: visible;
+  /* блоб выходит за границы секции по вертикали — как во фрейме макета;
+     по горизонтали режем, иначе у страницы появляется прокрутка */
+  overflow-x: clip;
+  overflow-y: visible;
 }
 .showcase__blob {
   position: absolute;
@@ -959,7 +966,7 @@ body::before {
   }
 
   /* ---------- разделители глав ---------- */
-  .chapter { height: auto; padding: 48px var(--gutter); overflow: visible; }
+  .chapter { height: auto; padding: 48px var(--gutter); overflow-x: clip; overflow-y: visible; }
   .chapter__title {
     font-size: clamp(30px, 8vw, 84px);
     line-height: 1.1;
@@ -1331,7 +1338,7 @@ body::before {
   .note .h3 { font-size: 16px; line-height: 16px; }
 
   /* ---------- 6. разделитель главы (741:1693) --------------------------- */
-  .chapter { height: auto; padding: 40px var(--gutter) 16px; overflow: visible; }
+  .chapter { height: auto; padding: 40px var(--gutter) 16px; overflow-x: clip; overflow-y: visible; }
   .chapter__title {
     font-size: 48px;
     line-height: 48px;
@@ -1579,7 +1586,11 @@ body::before {
    =========================================================================== */
 .sheet {
   position: fixed;
-  inset: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 100vh;
+  height: 100dvh;                  /* с учётом панелей браузера на телефоне */
   z-index: 600;
   display: flex;
   align-items: flex-end;
@@ -1604,7 +1615,7 @@ body::before {
   width: 100%;
   max-height: 84vh;
   overflow-y: auto;
-  padding: 10px 12px calc(16px + env(safe-area-inset-bottom, 0px));
+  padding: 10px 12px max(16px, env(safe-area-inset-bottom, 0px));
   border-radius: 24px 24px 0 0;
   background: #fff;
   box-shadow: 0 -8px 44px rgba(39, 55, 69, 0.2);
@@ -1692,8 +1703,12 @@ body.is-locked { overflow: hidden; }
     gap: 20px;
     padding: 8px;
     border-radius: 24px;
-    background: #fff;
-    box-shadow: 0 6px 26px rgba(39, 55, 69, 0.14);
+    /* то же стекло, что у шапки */
+    background: rgba(255, 255, 255, 0.42);
+    backdrop-filter: blur(20px) saturate(1.7);
+    -webkit-backdrop-filter: blur(20px) saturate(1.7);
+    box-shadow: 0 6px 26px rgba(39, 55, 69, 0.14),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
     transition: transform 0.45s var(--ease), opacity 0.3s linear;
   }
   /* нижняя навигация тоже залипает */
