@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Редизайн Яндекс.Форм — Екатерина Мохова</title>
-<meta name="description" content="UX/UI-кейс: редизайн Яндекс.Форм — внутреннего конструктора форм компании. Главная и список, конструктор и темы.">
+<meta name="description" content="UX/UI-кейс: редизайн Яндекс.Форм — внутреннего редактора форм компании. Главная и список, редактор и темы.">
 <meta name="author" content="Екатерина Мохова">
 <meta property="og:title" content="Редизайн Яндекс.Форм — UX/UI-кейс">
-<meta property="og:description" content="Редизайн внутреннего конструктора форм Яндекса: главная и список, конструктор и темы.">
+<meta property="og:description" content="Редизайн внутреннего редактора форм Яндекса: главная и список, редактор и темы.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="../assets/img/hero-editor.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -30,7 +30,7 @@
     <nav class="nav">
       <span class="nav__cap">Разделы:</span>
       <a href="#homepage" data-nav="homepage">главная</a>
-      <a href="#editor" data-nav="editor">конструктор</a>
+      <a href="#editor" data-nav="editor">редактор</a>
       <a href="#styles" data-nav="styles">темы</a>
     </nav>
     <a class="avatar" href="../../" aria-label="На главную">
@@ -49,7 +49,7 @@
 <main class="page" id="top">
 
   <!-- ================= HERO ================= -->
-  <section class="hero">
+  <section class="hero" id="intro">
     <div class="hero__card">
       <div class="hero__inner">
         <div class="hero__meta">
@@ -60,7 +60,7 @@
           <h1 class="hero__title" data-hero-title>Редизайн <br>Яндекс.Форм</h1>
           <div class="glass" data-parallax="0.06">
             <figure class="hero__shot">
-              <img src="../assets/img/hero-editor.png" alt="Новый конструктор Яндекс.Форм">
+              <img src="../assets/img/hero-editor.png" alt="Новый редактор Яндекс.Форм">
             </figure>
           </div>
         </div>
@@ -71,7 +71,7 @@
   <!-- ================= ABOUT ================= -->
   <section class="section section--about">
     <p class="eyebrow" data-reveal>(что за сервис)</p>
-    <h2 class="about__title" data-reveal>Конструктор опросов, анкет <br>и любых форм для сотрудников Яндекса. <br>Интегрируется с внутренними сервисами</h2>
+    <h2 class="about__title" data-reveal>Редактор опросов, анкет <br>и любых форм для сотрудников Яндекса. <br>Интегрируется с внутренними сервисами</h2>
   </section>
 
   <!-- ================= PROBLEM ================= -->
@@ -98,7 +98,7 @@
               <img loading="lazy" decoding="async" src="../assets/img/old-theme-editor.png" alt="Старый редактор тем">
             </figure>
             <figure class="shot shot--editor shot--dup">
-              <img loading="lazy" decoding="async" src="../assets/img/old-editor.png" alt="Старый конструктор форм">
+              <img loading="lazy" decoding="async" src="../assets/img/old-editor.png" alt="Старый редактор форм">
             </figure>
           </div>
         </div>
@@ -106,9 +106,9 @@
 
       <div class="grid__row grid__row--b">
         <div class="card card--wide">
-          <p class="label">(старый конструктор)</p>
+          <p class="label">(старый редактор)</p>
           <figure class="shot shot--editor">
-            <img loading="lazy" decoding="async" src="../assets/img/old-editor.png" alt="Старый конструктор форм">
+            <img loading="lazy" decoding="async" src="../assets/img/old-editor.png" alt="Старый редактор форм">
           </figure>
         </div>
         <div class="card card--narrow">
@@ -319,14 +319,14 @@
   <!-- ================= CHAPTER 2 — EDITOR ================= -->
   <section class="chapter chapter--editor" id="editor">
     <div class="chapter__blob" data-blob="0.12"></div>
-    <h2 class="chapter__title">конструктор</h2>
+    <h2 class="chapter__title">редактор</h2>
   </section>
 
   <div class="collage" style="height:874px">
     <div class="card card--shot card--shot-l" data-reveal style="left:440.5px;top:0px;width:400px;height:275px">
       <p class="label">(старая главная)</p>
       <figure class="shot" style="width:376px;height:219px;border-radius:8px">
-        <img loading="lazy" decoding="async" src="../assets/img/editor-old-homepage.png" alt="Старый конструктор">
+        <img loading="lazy" decoding="async" src="../assets/img/editor-old-homepage.png" alt="Старый редактор">
       </figure>
     </div>
     <div class="card card--shot card--shot-l" data-reveal style="left:440.5px;top:287px;width:400px;height:275px">
@@ -430,17 +430,17 @@
       </div>
       <div class="feature__copy" style="left:660px;top:132px">
         <h3 class="h2">Удобная навигация</h3>
-        <div class="body-16"><p>Вместо списка вопросов сделала навигацию по конструктору: вынесла тип и текст вопроса</p><p>Добавила визуализацию вложенных вопросов <br>Можно добавлять и удалять вопросы <br>По нажатию на вопрос конструктор прокрутится до карточки этого вопроса <br>И, главное: теперь можно перемещать вопросы прямо в панели навигации</p></div>
+        <div class="body-16"><p>Вместо списка вопросов сделала навигацию по редактору: вынесла тип и текст вопроса</p><p>Добавила визуализацию вложенных вопросов <br>Можно добавлять и удалять вопросы <br>По нажатию на вопрос редактор прокрутится до карточки этого вопроса <br>И, главное: теперь можно перемещать вопросы прямо в панели навигации</p></div>
       </div>
     </article>
   </section>
 
-  <section class="showcase" style="padding:32px 0 64px" data-cap="(новый конструктор) и (несколько страниц)">
+  <section class="showcase" style="padding:32px 0 64px" data-cap="(новый редактор) и (несколько страниц)">
     <div class="showcase__blob" style="left:-237px;top:-318px;width:1881px;height:1783px;background:var(--green-glow);filter:blur(148px)" data-blob="0.08"></div>
     <div class="showcase__item" data-reveal>
-      <p class="label--lg">(новый конструктор)</p>
+      <p class="label--lg">(новый редактор)</p>
       <div class="showcase__glass">
-        <figure class="showcase__shot" style="height:1062px"><img loading="lazy" decoding="async" src="../assets/img/editor-new.png" alt="Новый конструктор Форм"></figure>
+        <figure class="showcase__shot" style="height:1062px"><img loading="lazy" decoding="async" src="../assets/img/editor-new.png" alt="Новый редактор Форм"></figure>
       </div>
     </div>
   </section>
@@ -465,12 +465,12 @@
       <div class="result-rule"></div>
       <div class="result-item">
         <h3 class="h2">Гладкий релиз</h3>
-        <div class="body-16"><p>Новый конструктор релизили целиком и дали возможность перейти на новый интерфейс в течение пары месяцев. <br>В первую неделю после релиза больше половины перешли на новый интерфейс. <br>За две недели почти все перешли. Никто не вернулся к старой версии</p></div>
+        <div class="body-16"><p>Новый редактор релизили целиком и дали возможность перейти на новый интерфейс в течение пары месяцев. <br>В первую неделю после релиза больше половины перешли на новый интерфейс. <br>За две недели почти все перешли. Никто не вернулся к старой версии</p></div>
       </div>
       <div class="result-rule"></div>
       <div class="result-item">
         <h3 class="h2">Улучшение метрик</h3>
-        <div class="body-16"><p>Время пользования конструктором уменьшается: на минуту и более в зависимости от размера формы, <br>количество форм и публикаций осталось прежним. <br>Новый редактор нагляднее, убраны лишние шаги</p></div>
+        <div class="body-16"><p>Время пользования редактором уменьшается: на минуту и более в зависимости от размера формы, <br>количество форм и публикаций осталось прежним. <br>Новый редактор нагляднее, убраны лишние шаги</p></div>
       </div>
     </article>
   </section>
@@ -655,12 +655,27 @@
 
 <nav class="dock" aria-label="Разделы:">
   <span class="dock__sections">
+    <a href="#intro" data-nav="intro">интро</a>
     <a href="#homepage" data-nav="homepage">главная</a>
-    <a href="#editor" data-nav="editor">конструктор</a>
+    <a href="#editor" data-nav="editor">редактор</a>
     <a href="#styles" data-nav="styles">темы</a>
   </span>
-  <a class="dock__cta" href="mailto:katecherno@proton.me">почта</a>
+  <button class="dock__cta" type="button" data-sheet="contacts">контакты</button>
 </nav>
+
+
+<div class="sheet" id="contacts" hidden>
+  <button class="sheet__scrim" type="button" data-sheet-close aria-label="Закрыть"></button>
+  <div class="sheet__panel" role="dialog" aria-modal="true" aria-labelledby="contacts-title">
+    <span class="sheet__grip" aria-hidden="true"></span>
+    <p class="sheet__title" id="contacts-title">Контакты</p>
+    <ul class="sheet__list">
+      <li><a href="mailto:katecherno@proton.me">Почта<span>katecherno@proton.me</span></a></li>
+      <li><a href="https://www.linkedin.com/in/екатерина-мохова-a036a053/" target="_blank" rel="noopener">LinkedIn<span>Катя Мохова</span></a></li>
+      <li><a href="https://disk.yandex.ru/i/5MKnDbh3JXLgug" target="_blank" rel="noopener">Резюме<span>PDF</span></a></li>
+    </ul>
+  </div>
+</div>
 
 <script src="../js/main.js?v=8"></script>
 </body>
