@@ -1785,3 +1785,10 @@ body.is-locked { overflow: hidden; }
   .dock .dock__cta { padding: 6px 7px 4px; }
   .dock a, .dock .dock__cta { font-size: 11px; }
 }
+
+/* Английские метрики: «-2min» — один неразрывный токен, на 320 он не влезал
+   в колонку и вылезал за экран. Подрезаем поля карточки и кегль числа. */
+@media (max-width: 359px) {
+  .metric { padding: 20px 16px 14px; }
+  .metric__value { font-size: 32px; line-height: 32px; letter-spacing: 2px; }
+}
