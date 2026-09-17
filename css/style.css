@@ -1092,24 +1092,57 @@ body::before {
      остаются ровно такими, как в макете */
   .page { padding-left: var(--edge); padding-right: var(--edge); }
 
-  /* ---------- шапка: наверху остаются только аватар и язык -------------- */
-  .header { height: 56px; }
+  /* ---------- шапка: макет 907:43766 ------------------------------------ */
+  /* стекло со скруглением снизу; наверху остаются только аватар и язык */
+  .header {
+    height: 48px;
+    border-radius: 0 0 16px 16px;
+    /* в макете это эффект GLASS: 10% белого плюс сильное преломление.
+       в CSS такого нет, поэтому белого больше, а размытие мягче — на глаз
+       результат тот же, и подписи поверх стекла читаются */
+    background: rgba(255, 255, 255, 0.42);
+    backdrop-filter: blur(20px) saturate(1.7);
+    -webkit-backdrop-filter: blur(20px) saturate(1.7);
+    box-shadow: 0 10px 26px -12px rgba(39, 55, 69, 0.2),
+                inset 0 -1px 0 rgba(255, 255, 255, 0.5);
+    /* на главной стекло включается после героя — пусть проявляется плавно */
+    transition: transform 0.45s var(--ease), background 0.3s linear,
+                box-shadow 0.3s linear, border-radius 0.3s linear,
+                -webkit-backdrop-filter 0.3s linear, backdrop-filter 0.3s linear;
+  }
   .header__inner {
-    padding: 0 calc(16px + var(--edge));
+    padding: 8px calc(16px + var(--edge));
     gap: 0;
-    justify-content: flex-start;
+    justify-content: space-between;
   }
   .nav:not(.nav--right) { display: none; }   /* разделы уехали в нижнюю таблетку */
   .nav__cap { display: none; }
-  .avatar { order: -1; margin-right: auto; width: 34px; height: 34px; }
+  .avatar { order: -1; margin-right: auto; width: 24px; height: 24px; border-radius: 4px; }
   .nav--right { flex: 0 0 auto; gap: 0; padding-left: 0; }
   .nav--right > a { display: none; }
-  /* зона нажатия 44 при кегле 17 — палец больше не промахивается */
-  .lang { gap: 16px; font-size: 17px; }
-  .lang a { padding: 13px 1px; }
-  .lang a + a::before { left: -10px; }
+  /* язык: серая дорожка, активный на белой плашке */
+  .lang {
+    gap: 2px;
+    padding: 2px;
+    border-radius: 16px;
+    background: #e5e0db;
+    font-size: 14px;
+  }
+  .lang a {
+    min-width: 0;
+    height: 26px;
+    padding: 6px 8px 4px;
+    border-radius: 28px;
+    font-weight: 500;
+    line-height: 16px;
+    color: rgba(24, 35, 46, 0.8);
+    background: none;
+    box-shadow: none;
+  }
+  .lang a.is-current { background: #fff; font-weight: 500; }
+  .lang a + a::before { content: none; }
 
-  .page { padding-top: 56px; }
+  .page { padding-top: 48px; }
   .footer { padding-bottom: 104px; }        /* место под плавающую таблетку */
 
   /* ---------- общая типографика секций ---------------------------------- */
@@ -1544,6 +1577,9 @@ body::before {
 .dock { display: none; }
 
 @media (max-width: 759px) {
+  /* макет 904:43649 «bottom_sticky»: белая плашка 48px, радиус 24,
+     разделы группой слева, кнопка контактов справа.
+     ширина остаётся прежней — поля 12px плюс общее поле страницы */
   .dock {
     position: fixed;
     left: calc(12px + var(--edge, 0px));
@@ -1552,41 +1588,71 @@ body::before {
     z-index: 420;
     display: flex;
     align-items: center;
-    gap: 2px;
-    padding: 5px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.82);
-    backdrop-filter: blur(16px) saturate(1.5);
-    -webkit-backdrop-filter: blur(16px) saturate(1.5);
-    box-shadow: 0 6px 26px rgba(39, 55, 69, 0.16),
-                inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+    justify-content: space-between;
+    gap: 20px;
+    padding: 8px;
+    border-radius: 24px;
+    background: #fff;
+    box-shadow: 0 6px 26px rgba(39, 55, 69, 0.14);
     transition: transform 0.45s var(--ease), opacity 0.3s linear;
   }
-  /* таблетка уезжает вместе с шапкой, чтобы не мешать чтению */
-  .header.is-hidden ~ .dock,
+  /* «sticky» понимаем буквально: плашка остаётся, даже когда шапка уезжает */
+  .header.is-hidden ~ .dock { transform: none; opacity: 1; }
   .dock.is-hidden { transform: translateY(calc(100% + 24px)); opacity: 0; }
 
+  /* внутри группы разделов гэпа нет — двадцать пикселей только до кнопки */
+  .dock__sections { display: flex; align-items: center; min-width: 0; }
+
   .dock a {
-    flex: 1 1 0;
+    flex: 0 1 auto;
     min-width: 0;
     text-align: center;
-    font-size: 13px;
-    line-height: 1;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    letter-spacing: 0;
     text-transform: uppercase;
-    letter-spacing: 0.03em;
-    padding: 13px 4px;
-    border-radius: 999px;
-    color: rgba(24, 35, 46, 0.75);
+    padding: 6px 12px 4px;
+    border-radius: 0;
+    color: rgba(24, 35, 46, 0.3);
     white-space: nowrap;
-    transition: background 0.3s var(--ease), color 0.3s var(--ease);
+    transition: color 0.3s var(--ease);
   }
-  .dock a:hover { color: var(--hover); }
-  .dock a.is-current { background: var(--ink); color: #fff; }
-  .dock__cta {
-    flex: 0 0 auto !important;
-    padding: 13px 16px !important;
-    font-weight: 600;
-    color: #fff !important;
-    background: linear-gradient(120deg, var(--orange), #e561d3);
+  .dock a.is-current { background: none; color: rgba(24, 35, 46, 0.8); }
+
+  /* кнопка бывает и ссылкой (кейс), и кнопкой (главная) — отсюда сброс */
+  .dock .dock__cta {
+    flex: 0 0 auto;
+    border: 0;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding: 6px 12px 4px;
+    border-radius: 20px;
+    color: rgba(255, 255, 255, 0.8);
+    background: var(--orange);
+    transition: transform 0.14s var(--ease-out), filter 0.25s var(--ease);
   }
+  .dock .dock__cta:active { transform: scale(0.95); }
+  @media (hover: hover) and (pointer: fine) {
+    .dock .dock__cta:hover { filter: brightness(1.06); }
+  }
+}
+
+/* уже макета: сначала поджимаем отступы таблетки, кегль оставляем ----------- */
+@media (max-width: 389px) {
+  .dock { gap: 12px; }
+  .dock a { padding: 6px 8px 4px; }
+}
+
+/* совсем узкие экраны: уменьшаем и кегль ----------------------------------- */
+@media (max-width: 359px) {
+  .dock { gap: 8px; }
+  .dock a { padding: 6px 7px 4px; font-size: 13px; }
+  .dock .dock__cta { padding: 6px 9px 4px; font-size: 13px; }
 }
