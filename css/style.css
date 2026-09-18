@@ -1100,12 +1100,18 @@ body::before {
 
   /* поле навешивается на полотно целиком, поэтому внутренние отступы блоков
      остаются ровно такими, как в макете */
-  .page { padding-left: var(--edge); padding-right: var(--edge); }
+  .page {
+    padding-left: calc(var(--edge) + env(safe-area-inset-left, 0px));
+    padding-right: calc(var(--edge) + env(safe-area-inset-right, 0px));
+  }
 
   /* ---------- шапка: макет 907:43766 ------------------------------------ */
   /* стекло со скруглением снизу; наверху остаются только аватар и язык */
   .header {
-    height: 48px;
+    /* страница идёт под статус-бар (viewport-fit=cover), поэтому стекло
+       начинается от самого верха, а содержимое опускается на его высоту */
+    height: calc(48px + env(safe-area-inset-top, 0px));
+    padding-top: env(safe-area-inset-top, 0px);
     border-radius: 0 0 16px 16px;
     /* в макете это эффект GLASS: 10% белого плюс сильное преломление.
        в CSS такого нет, поэтому белого больше, а размытие мягче — на глаз
@@ -1121,7 +1127,8 @@ body::before {
                 -webkit-backdrop-filter 0.3s linear, backdrop-filter 0.3s linear;
   }
   .header__inner {
-    padding: 8px calc(16px + var(--edge));
+    padding: 8px calc(16px + var(--edge) + env(safe-area-inset-right, 0px))
+             8px calc(16px + var(--edge) + env(safe-area-inset-left, 0px));
     gap: 0;
     justify-content: space-between;
   }
@@ -1152,7 +1159,7 @@ body::before {
   .lang a.is-current { background: #fff; font-weight: 500; }
   .lang a + a::before { content: none; }
 
-  .page { padding-top: 48px; }
+  .page { padding-top: calc(48px + env(safe-area-inset-top, 0px)); }
   .footer { padding-bottom: 104px; }        /* место под плавающую таблетку */
 
   /* ---------- общая типографика секций ---------------------------------- */
@@ -1239,6 +1246,7 @@ body::before {
     width: 100%;
     gap: 8px;
     overflow-x: auto;
+    overflow-y: hidden;
     overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
@@ -1373,6 +1381,7 @@ body::before {
     gap: 8px;
     padding: 0 4px;
     overflow-x: auto;
+    overflow-y: hidden;
     overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
     scroll-padding-left: 4px;
@@ -1442,6 +1451,7 @@ body::before {
     gap: 8px;
     padding: 0 12px;
     overflow-x: auto;
+    overflow-y: hidden;
     overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
     scroll-padding-left: 12px;
@@ -1458,6 +1468,11 @@ body::before {
     background: #fff;
   }
   .collage__row > .card .h3 { font-size: 20px; line-height: 20px; }
+
+  /* внутри лент карточки проявляются только прозрачностью: сдвиг на 28px
+     делал ленту выше самой себя, и она начинала скроллиться по вертикали */
+  .collage__shots > [data-reveal],
+  .collage__row > [data-reveal] { transform: none; }
 
   .loose { display: none; }
 
@@ -1693,8 +1708,8 @@ body.is-locked { overflow: hidden; }
      ширина остаётся прежней — поля 12px плюс общее поле страницы */
   .dock {
     position: fixed;
-    left: calc(12px + var(--edge, 0px));
-    right: calc(12px + var(--edge, 0px));
+    left: calc(12px + var(--edge, 0px) + env(safe-area-inset-left, 0px));
+    right: calc(12px + var(--edge, 0px) + env(safe-area-inset-right, 0px));
     bottom: calc(12px + env(safe-area-inset-bottom, 0px));
     z-index: 420;
     display: flex;
