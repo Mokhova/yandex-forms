@@ -1100,18 +1100,20 @@ body::before {
 
   /* поле навешивается на полотно целиком, поэтому внутренние отступы блоков
      остаются ровно такими, как в макете */
-  .page {
-    padding-left: calc(var(--edge) + env(safe-area-inset-left, 0px));
-    padding-right: calc(var(--edge) + env(safe-area-inset-right, 0px));
-  }
+  .page { padding-left: var(--edge); padding-right: var(--edge); }
 
   /* ---------- шапка: макет 907:43766 ------------------------------------ */
   /* стекло со скруглением снизу; наверху остаются только аватар и язык */
   .header {
-    /* страница идёт под статус-бар (viewport-fit=cover), поэтому стекло
-       начинается от самого верха, а содержимое опускается на его высоту */
-    height: calc(48px + env(safe-area-inset-top, 0px));
-    padding-top: env(safe-area-inset-top, 0px);
+    /* шапка намеренно вылезает за верхний край вьюпорта.
+       сколько бы браузер ни отступил сверху — безопасная зона айфона,
+       недоехавшая панель Safari, рассинхрон layout и visual viewport —
+       стекло всё равно закрывает полосу до самого края экрана.
+       видимая часть остаётся ровно 48, как в макете */
+    --bleed: 160px;
+    top: calc(-1 * var(--bleed));
+    height: calc(48px + var(--bleed));
+    padding-top: var(--bleed);
     border-radius: 0 0 16px 16px;
     /* в макете это эффект GLASS: 10% белого плюс сильное преломление.
        в CSS такого нет, поэтому белого больше, а размытие мягче — на глаз
@@ -1127,8 +1129,7 @@ body::before {
                 -webkit-backdrop-filter 0.3s linear, backdrop-filter 0.3s linear;
   }
   .header__inner {
-    padding: 8px calc(16px + var(--edge) + env(safe-area-inset-right, 0px))
-             8px calc(16px + var(--edge) + env(safe-area-inset-left, 0px));
+    padding: 8px calc(16px + var(--edge));
     gap: 0;
     justify-content: space-between;
   }
@@ -1159,7 +1160,7 @@ body::before {
   .lang a.is-current { background: #fff; font-weight: 500; }
   .lang a + a::before { content: none; }
 
-  .page { padding-top: calc(48px + env(safe-area-inset-top, 0px)); }
+  .page { padding-top: 48px; }
   .footer { padding-bottom: 104px; }        /* место под плавающую таблетку */
 
   /* ---------- общая типографика секций ---------------------------------- */
@@ -1708,8 +1709,8 @@ body.is-locked { overflow: hidden; }
      ширина остаётся прежней — поля 12px плюс общее поле страницы */
   .dock {
     position: fixed;
-    left: calc(12px + var(--edge, 0px) + env(safe-area-inset-left, 0px));
-    right: calc(12px + var(--edge, 0px) + env(safe-area-inset-right, 0px));
+    left: calc(12px + var(--edge, 0px));
+    right: calc(12px + var(--edge, 0px));
     bottom: calc(12px + env(safe-area-inset-bottom, 0px));
     z-index: 420;
     display: flex;
