@@ -312,10 +312,11 @@
       var target = id ? document.getElementById(id) : null;
       if (!target) return;
       e.preventDefault();
-      // отступ по видимому низу шапки: на мобильном это 48, а не 88,
-      // и сама шапка при этом вылезает за верхний край экрана
+      // отступ по видимому низу шапки; на мобильном она плавающая таблетка,
+      // поэтому добавляем те же 12px воздуха, что и по её краям
       var head = document.getElementById('header');
-      var off = head ? Math.max(0, head.getBoundingClientRect().bottom) : 88;
+      var air = window.matchMedia('(max-width: 759px)').matches ? 12 : 0;
+      var off = head ? Math.max(0, head.getBoundingClientRect().bottom) + air : 88;
       var top = target.getBoundingClientRect().top + window.pageYOffset - off;
       window.scrollTo({ top: top, behavior: reduced ? 'auto' : 'smooth' });
     });
