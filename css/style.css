@@ -1114,8 +1114,13 @@ body::before {
      backdrop-filter — плотные .92, как у них же */
   .header {
     top: 0;
-    height: 48px;
-    padding: 0;
+    /* безопасная зона сверху берётся ПАДДИНГОМ самой фиксированной шапки,
+       а не сдвигом через top: иначе фон начинается ниже края экрана и в
+       полосе за статус-баром просвечивает контент страницы.
+       высота = 48 содержимого + вырез, фон заливает всю полосу целиком */
+    box-sizing: border-box;
+    height: calc(48px + env(safe-area-inset-top, 0px));
+    padding: env(safe-area-inset-top, 0px) 0 0;
     border-radius: 0;
     box-shadow: none;
     background: rgba(250, 250, 252, 0.92);
@@ -1165,7 +1170,8 @@ body::before {
   .lang a.is-current { background: #fff; font-weight: 500; }
   .lang a + a::before { content: none; }
 
-  .page { padding-top: 48px; }
+  /* компенсация только у полотна страницы, не у body/html */
+  .page { padding-top: calc(48px + env(safe-area-inset-top, 0px)); }
   .footer { padding-bottom: 104px; }        /* место под плавающую таблетку */
 
   /* ---------- общая типографика секций ---------------------------------- */
