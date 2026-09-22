@@ -75,12 +75,14 @@
 *::before,
 *::after { box-sizing: border-box; }
 
-/* без overflow-x на html и body: в iOS Safari это сбивает position: fixed —
-   шапка и шторка отъезжают от края экрана. всё, что вылезает по горизонтали,
-   режется теперь на своих блоках (.hero, .case, .chapter) */
 html { scroll-behavior: smooth; }
 
 body {
+  /* свечения глав и витрин намеренно шире страницы — режем их по краю
+     экрана, а не по краю блока, иначе по бокам появляются жёсткие границы.
+     значение уходит с body на viewport, так что body скролл-контейнером
+     не становится и фиксированные шапка и плашка ведут себя как прежде */
+  overflow-x: hidden;
   margin: 0;
   background: var(--paper);
   color: var(--ink);
@@ -569,12 +571,11 @@ body::before {
 /* =========================================================================
    CHAPTER DIVIDER
    ========================================================================= */
-/* блоб намеренно выходит за границы блока по вертикали — в макете фрейм не
-   обрезает контент; по горизонтали режем, иначе у страницы появляется прокрутка */
+/* блоб намеренно выходит за границы блока во все стороны и лежит под всем
+   контентом страницы (z-index: -1 без stacking context у предков); по краю
+   экрана его режет body, поэтому свечение идёт на всю ширину окна */
 .chapter {
   position: relative;
-  overflow-x: clip;
-  overflow-y: visible;
   height: 182px;
   display: flex;
   align-items: center;
@@ -736,10 +737,8 @@ body::before {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* блоб выходит за границы секции по вертикали — как во фрейме макета;
-     по горизонтали режем, иначе у страницы появляется прокрутка */
-  overflow-x: clip;
-  overflow-y: visible;
+  /* блоб выходит за границы секции во все стороны — как во фрейме макета;
+     по краю экрана его режет body */
 }
 .showcase__blob {
   position: absolute;
@@ -895,7 +894,11 @@ body::before {
 @media (max-width: 1023px) {
   :root { --gutter: 20px; }
 
-  .page { width: 100%; padding-top: 72px; }
+  /* полотно здесь во всю ширину окна, поэтому свечения режем прямо по нему:
+     у документа не остаётся горизонтального переполнения вообще. одного
+     overflow на body мобильным браузерам мало — при переполнении они
+     позволяют сдвигать экран вбок через visual viewport */
+  .page { width: 100%; padding-top: 72px; overflow-x: clip; }
 
   /* ---------- header ---------- */
   .header { height: 56px; }
@@ -966,7 +969,7 @@ body::before {
   }
 
   /* ---------- разделители глав ---------- */
-  .chapter { height: auto; padding: 48px var(--gutter); overflow-x: clip; overflow-y: visible; }
+  .chapter { height: auto; padding: 48px var(--gutter); }
   .chapter__title {
     font-size: clamp(30px, 8vw, 84px);
     line-height: 1.1;
@@ -1237,6 +1240,10 @@ body::before {
 
   .grid__row > .card:has(.shot--theme) {
     order: -1;
+    /* во всю ширину ряда и симметрично: общее правило ставит width: 100%,
+       и с отрицательным полем карточка уезжала влево, справа оставался зазор */
+    align-self: stretch;
+    width: auto;
     margin: 0 -12px;
     padding: 0;
     border-radius: 16px;
@@ -1350,7 +1357,7 @@ body::before {
   .note .h3 { font-size: 16px; line-height: 16px; }
 
   /* ---------- 6. разделитель главы (741:1693) --------------------------- */
-  .chapter { height: auto; padding: 40px var(--gutter) 16px; overflow-x: clip; overflow-y: visible; }
+  .chapter { height: auto; padding: 40px var(--gutter) 16px; }
   .chapter__title {
     font-size: 48px;
     line-height: 48px;
@@ -1431,14 +1438,18 @@ body::before {
     order: -1;
     margin: 0 4px;
     padding: 4px;
+    gap: 12px;
     border-radius: 16px;
     background: #f9f9f9;
   }
+  /* на десктопе у глав «редактор» и «темы» подпись прижата влево,
+     на мобильном все карточки со скриншотами одинаковые — подпись по центру */
   .collage .card--shot > .label {
     position: static !important;
     left: auto !important; top: auto !important;
-    margin: 8px 0 6px 10px;
-    text-align: left;
+    align-self: center;
+    margin: 8px 0 6px;
+    text-align: center;
   }
   .collage .shot {
     position: static !important;
@@ -1540,16 +1551,17 @@ body::before {
   /* ---------- 10. витрины (760:826, 763:1113) ---------------------------
      На мобильном витрины лежат на тёмной плашке #18232e: подпись белая
      полупрозрачная, скриншоты во всю ширину и обрезаны сверху.
-     Соседние витрины склеиваются в одну ленту.
+     Пары скриншотов лежат в одной секции-карточке.
      --------------------------------------------------------------------- */
+  /* пары скриншотов лежат в одной секции, поэтому тёмная плашка одна:
+     скруглённая карточка, по краям выровнена с остальными карточками страницы */
   .showcase {
+    margin: 0 4px;
+    border-radius: 28px;
     background: var(--ink);
     padding: 24px 4px 40px !important;
-    gap: 8px !important;
+    gap: 8px !important;               /* между скриншотами 8, как в макете */
   }
-  .showcase + .showcase { padding-top: 0 !important; }
-  /* пара витрин читается как одна лента: между скриншотами 8, как в макете */
-  .showcase:has(+ .showcase) { padding-bottom: 8px !important; }
   .showcase__item { width: 100%; padding-top: 0; gap: 8px; align-items: center; }
   .showcase__blob { display: none; }
   .showcase__glass {
