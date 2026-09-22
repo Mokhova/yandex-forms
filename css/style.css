@@ -1137,7 +1137,7 @@ body::before {
   }
   .nav:not(.nav--right) { display: none; }   /* разделы уехали в нижнюю таблетку */
   .nav__cap { display: none; }
-  .avatar { order: -1; margin-right: auto; width: 24px; height: 24px; border-radius: 4px; }
+  .avatar { order: -1; margin-right: auto; width: 32px; height: 32px; margin-left: 2px; border-radius: 50%; }
   .nav--right { flex: 0 0 auto; gap: 0; padding-left: 0; }
   .nav--right > a { display: none; }
   /* язык: серая дорожка, активный на белой плашке */
