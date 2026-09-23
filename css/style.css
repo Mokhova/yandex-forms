@@ -1178,7 +1178,7 @@ body::before {
     text-align: center;
   }
   .h2 { font-size: 28px; line-height: 26px; text-align: center; color: var(--ink); }
-  .h3 { font-size: 20px; line-height: 26px; }
+  .h3 { font-size: 20px; line-height: 24px; }
   .body-16, .body-18 { font-size: 16px; line-height: 18px; }
   .label {
     font-family: var(--font-alt);
@@ -1231,7 +1231,7 @@ body::before {
     gap: 8px;
     background: rgba(255, 255, 255, 0.7);
   }
-  .card .h3 { font-size: 20px; line-height: 26px; }
+  .card .h3 { font-size: 20px; line-height: 24px; }
   .card .dim { color: rgba(24, 35, 46, 0.4); }
 
   /* оба старых скриншота собираются в одну карточку-галерею и листаются
@@ -1285,34 +1285,45 @@ body::before {
 
   /* ---------- 4. solution / versus (710:1298) --------------------------- */
   .section--solution { padding: 28px 0 100px; gap: 24px; }
-  .versus { flex-direction: column; position: relative; gap: 1px; padding: 0 var(--gutter); }
+  /* сетка вместо флекса: строки 1fr делают обе карточки одной высоты —
+     по самой высокой, сколько бы строк ни занял текст */
+  .versus {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: 1fr;
+    position: relative;
+    gap: 1px;
+    padding: 0 var(--gutter);
+  }
   .versus .card {
     width: 100%;
     height: auto;
     min-height: 0;
-    padding: 28px 28px 40px;
+    padding: 32px 28px 40px;
     border-radius: 24px;
     gap: 8px;
     text-align: center;
     align-items: center;
+    /* на десктопе тут space-between: в растянутой карточке он раздвигал
+       заголовок и текст, поэтому гэп у светлой был больше */
+    justify-content: flex-start;
   }
   .versus .card--dark {
     order: 0;
-    height: 180px;
     background: var(--ink);      /* общее правило .card выше перебивало фон */
     text-align: center;
     align-items: center;
-    justify-content: center;
   }
   .versus .card:not(.card--dark) { order: 2; }
-  .versus .card .h3 { font-size: 20px; line-height: 20px; }
+  .versus .card .h3 { font-size: 20px; line-height: 24px; }
   .versus .card .body-18 { font-size: 16px; line-height: 16px; }
   /* «VS» сидит ровно в зазоре между карточками, а не по центру всего блока */
   .versus__mark {
     left: calc(50% - 20px);
-    top: 160.5px;                /* центр кружка — в зазоре под тёмной карточкой */
+    top: calc(50% - 20px);       /* карточки равной высоты — зазор ровно посередине */
     bottom: auto;
     right: auto;
+    line-height: 24px;
   }
 
   /* ---------- 5. result / outcome (737:1593) ---------------------------- */
@@ -1325,7 +1336,7 @@ body::before {
     min-width: 0;
     height: 160px;
     min-height: 0;
-    padding: 24px 24px 16px;
+    padding: 24px;
     border-radius: 24px;
     gap: 8px;
     justify-content: space-between;
@@ -1336,7 +1347,7 @@ body::before {
       rgb(196, 233, 202) 0.85%, rgb(255, 221, 187) 98.83%);
   }
   .metric .h3 { font-size: 16px; line-height: 16px; }
-  .metric__value { font-size: 40px; line-height: 40px; letter-spacing: 5px; }
+  .metric__value { font-size: 40px; line-height: 25px; letter-spacing: 0; }
   .note {
     width: auto;
     height: auto;
@@ -1400,8 +1411,9 @@ body::before {
     scrollbar-width: none;
   }
   .collage__shots::-webkit-scrollbar { display: none; }
+  /* слайд во всю ширину ленты: соседний не выглядывает, листается свайпом */
   .collage__shots > .card--shot {
-    flex: 0 0 calc(100% - 14px);
+    flex: 0 0 100%;
     margin: 0 !important;
     scroll-snap-align: start;
   }
@@ -1474,15 +1486,19 @@ body::before {
     scrollbar-width: none;
   }
   .collage__row::-webkit-scrollbar { display: none; }
+  /* 240 — ширина из макета, но длинное слово («отредактированные.»)
+     в 184px между полями не влезало и вылезало за паддинг. min-content
+     даёт карточке ширину самого длинного слова плюс поля, если это больше 240 */
   .collage__row > .card {
-    flex: 0 0 240px;
-    width: 240px !important;
+    flex: 0 0 auto;
+    width: min-content !important;
+    min-width: 240px;
     scroll-snap-align: start;
     padding: 28px 28px 40px;
     border-radius: 24px;
     background: #fff;
   }
-  .collage__row > .card .h3 { font-size: 20px; line-height: 20px; }
+  .collage__row > .card .h3 { font-size: 20px; line-height: 24px; }
 
   /* внутри лент карточки проявляются только прозрачностью: сдвиг на 28px
      делал ленту выше самой себя, и она начинала скроллиться по вертикали */
@@ -1495,7 +1511,7 @@ body::before {
   .section--actions { padding: 28px var(--gutter) 100px; gap: 24px; }
   .paper-card { border-radius: 44px; padding: 44px 0; gap: 28px; }
   .step { padding: 0 28px; gap: 8px; }
-  .step .h3 { font-size: 20px; line-height: 20px; }
+  .step .h3 { font-size: 20px; line-height: 24px; }
   .step .body-16 { font-size: 16px; line-height: 18px; }
   .step__rule { width: 100%; }
   .bullets { gap: 16px; padding-left: 1px; }
@@ -1564,24 +1580,28 @@ body::before {
   }
   .showcase__item { width: 100%; padding-top: 0; gap: 8px; align-items: center; }
   .showcase__blob { display: none; }
+  .showcase--home { border-radius: 28px 28px 16px 16px; }
+  /* стекло на тёмной плашке не нужно — вместе с ним уходит и светлая рамка */
   .showcase__glass {
     width: 100%;
     padding: 0;
+    border: 0;
+    box-shadow: none;
     background: none;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
     border-radius: 8px;
   }
+  /* высота — по пропорциям исходной картинки, без обрезки
+     (!important перебивает инлайновую высоту десктопной раскладки) */
   .showcase__shot {
     width: 100%;
-    height: 280px !important;
+    height: auto !important;
     border-radius: 8px;
     overflow: hidden;
     background: #fff;
   }
-  /* глава «главная»: в макете эти два скриншота ниже остальных */
-  .showcase--home .showcase__shot { height: 204px !important; }
-  .showcase__shot img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .showcase__shot img { width: 100%; height: auto; }
   /* на мобильном у пары витрин одна общая подпись (763:1113),
      собственные подписи скриншотов не выводятся */
   .showcase .eyebrow,
@@ -1818,8 +1838,7 @@ body.is-locked { overflow: hidden; }
 }
 
 /* Английские метрики: «-2min» — один неразрывный токен, на 320 он не влезал
-   в колонку и вылезал за экран. Подрезаем поля карточки и кегль числа. */
+   в колонку и вылезал за экран. Подрезаем кегль числа, поля — как везде. */
 @media (max-width: 359px) {
-  .metric { padding: 20px 16px 14px; }
-  .metric__value { font-size: 32px; line-height: 32px; letter-spacing: 2px; }
+  .metric__value { font-size: 32px; }
 }
